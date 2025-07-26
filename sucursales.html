@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Sucursales Celucenter</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f4f4f4;
+    }
+    h1 {
+      text-align: center;
+      margin: 20px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+      padding: 20px;
+      max-width: 1200px;
+      margin: auto;
+    }
+    .card {
+      position: relative;
+      overflow: hidden;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      background: white;
+    }
+    .card img {
+      width: 100%;
+      height: auto;
+      max-height: 250px;
+      object-fit: contain;
+      background: #fff;
+      padding: 8px;
+      transition: opacity 0.6s ease-in-out;
+    }
+    .info {
+      padding: 15px;
+    }
+    .nombre {
+      font-weight: bold;
+      font-size: 18px;
+      margin-bottom: 6px;
+    }
+    .direccion, .telefono {
+      font-size: 14px;
+      margin: 4px 0;
+    }
+    .link-maps {
+      display: block;
+      margin-top: 8px;
+      font-size: 14px;
+      text-decoration: none;
+      color: #0077cc;
+    }
+    .link-maps:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+<h1>🏬 Sucursales Celucenter</h1>
+<div class="grid" id="catalogo"></div>
+
+<script>
+fetch("https://opensheet.elk.sh/1La-5XY4i9Ng3zpiXrre5tyAqANxpb9yuZeS8muFiZXA/Lista%20CC")
+  .then(response => response.json())
+  .then(data => {
+    const container = document.getElementById("catalogo");
+
+    data.forEach((item, index) => {
+      // Construir arreglo de imágenes
+      let imagenes = [];
+
+      if (item['Archivo'] && item['Archivo'].trim() !== "") {
+        imagenes = item['Archivo'].split(',').map(nombre =>
+          `https://raw.githubusercontent.com/piztian/SucursalesCelucenter/main/fotos/${nombre.trim()}`
+        );
+      } else if (item['URL']) {
+        imagenes = [item['URL']];
+      }
+
+      if (imagenes.length === 0) return; // Si no hay imagen, no mostrar
+
+      const idCarrusel = `carrusel-${index}`;
+      const html = `
+        <div class="card">
+          <a href="${item['Link de Ubicación en Maps']}" target="_blank">
+            <img id="${idCarrusel}" src="${imagenes[0]}" alt="${item['Nombre de Sucursal']}">
+          </a>
+          <div class="info">
+            <div class="nombre">${item['Nombre de Sucursal'] || ''}</div>
+            <div class="direccion">${item.Dirección || ''}</div>
+            <div class="telefono">📞 ${item['Teléfono de Tienda'] || ''}</div>
+            <a class="link-maps" href="${item['Link de Ubicación en Maps']}" target="_blank">🗺️ Ver en Google Maps</a>
+          </div>
+        </div>
+      `;
+
+      container.insertAdjacentHTML("beforeend", html);
+
+      // Si hay más de una imagen, activa rotación
+      if (imagenes.length > 1) {
+        let i = 0;
+        setInterval(() => {
+          i = (i + 1) % imagenes.length;
+          const imgEl = document.getElementById(idCarrusel);
+          if (imgEl) {
+            imgEl.style.opacity = 0;
+            setTimeout(() => {
+              imgEl.src = imagenes[i];
+              imgEl.style.opacity = 1;
+            }, 300);
+          }
+        }, 3000);
+      }
+    });
+  });
+</script>
+
+</body>
+</html>
