@@ -19,6 +19,8 @@ Crear una página web dinámica y visual donde se muestren las sucursales de Cel
 **API JSON a través de OpenSheet:**  
 `https://opensheet.elk.sh/1La-5XY4i9Ng3zpiXrre5tyAqANxpb9yuZeS8muFiZXA/Lista%20CC`
 
+Documento para Editar:
+https://docs.google.com/spreadsheets/d/1La-5XY4i9Ng3zpiXrre5tyAqANxpb9yuZeS8muFiZXA/edit?gid=1856771547#gid=1856771547 
 ---
 
 ## 📸 Repositorio de Imágenes
