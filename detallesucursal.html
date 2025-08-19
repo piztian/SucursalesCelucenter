@@ -2,105 +2,132 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Detalle de Equipo - CriShop</title>
+  <title>Detalle Sucursal</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
+    /* Estilo básico */
     body {
-      margin: 0;
-      padding: 0;
       font-family: 'Segoe UI', sans-serif;
-      background-color: #d3d3d3; /* Fondo gris metálico */
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-    }
-
-    .container {
-      background: white;
-      border-radius: 10px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.2);
+      margin: 0;
       padding: 20px;
-      max-width: 600px;
-      width: 90%;
-      text-align: center;
+      background-color: #f4f4f4;
     }
-
-    .titulo {
-      font-size: 24px;
-      font-weight: bold;
-      color: #e60023;
-      margin-bottom: 15px;
-    }
-
-    img {
-      max-width: 100%;
-      height: auto;
+    .detalle {
+      max-width: 800px;
+      margin: auto;
+      background-color: white;
+      padding: 20px;
       border-radius: 10px;
-      margin-bottom: 15px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     }
-
-    .precio {
-      background-color: #e60023;
-      color: white;
-      font-weight: bold;
-      padding: 5px 10px;
-      border-radius: 4px;
+    .detalle img {
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+      border-radius: 10px;
+    }
+    .detalle h1 {
+      font-size: 24px;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .detalle p {
       font-size: 16px;
-      display: inline-block;
-      margin-bottom: 10px;
+      margin: 10px 0;
     }
-
-    .caracteristicas, .modelo {
-      font-size: 14px;
-      color: #333;
-      margin-bottom: 10px;
+    .detalle a {
+      color: #0077cc;
+      text-decoration: none;
     }
-
-    .marca {
-      font-size: 16px;
-      font-weight: bold;
-      color: #000;
-      margin-bottom: 5px;
+    .detalle a:hover {
+      text-decoration: underline;
+    }
+    /* Estilo para el carrusel */
+    .carrusel {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin-top: 20px;
+    }
+    .carrusel img {
+      width: 100px;
+      height: 100px;
+      object-fit: contain;
+      cursor: pointer;
+      border-radius: 8px;
+      transition: opacity 0.3s ease;
+    }
+    .carrusel img:hover {
+      opacity: 0.7;
     }
   </style>
 </head>
 <body>
-  <div class="container" id="detalle">
-    <div class="titulo">📱 Detalle del Producto CriShop</div>
-    <!-- Contenido dinámico se insertará aquí -->
+
+  <div class="detalle" id="detalleSucursal">
+    <h1>Cargando...</h1>
+    <p>Por favor, espere mientras se cargan los detalles de la sucursal...</p>
   </div>
 
   <script>
-    // 🔍 Obtener parámetro desde la URL
-    const params = new URLSearchParams(window.location.search);
-    const modelo = params.get("modelo");
+    // Captura el parámetro 'sucursal' de la URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const sucursal = urlParams.get('sucursal');
 
-    // 🔗 Llamar al sheet de Lista F para obtener datos del equipo
-    fetch("https://opensheet.elk.sh/1YGFRcNmZ6bXe7L2hFS1w8YVkWXJVkyn46ILx0ki3uCM/Lista%20F")
-      .then(res => res.json())
-      .then(data => {
-        // 🔎 Buscar equipo cuyo nombre coincida con el modelo
-        const item = data.find(p => p.archivo.replace(/\.(jpg|jpeg|png)$/i, '') === modelo);
+    // Verifica si el parámetro 'sucursal' existe
+    if (sucursal) {
+      // Llama a la API de OpenSheet que convierte la hoja "Lista CC" en JSON
+      fetch("https://opensheet.elk.sh/1La-5XY4i9Ng3zpiXrre5tyAqANxpb9yuZeS8muFiZXA/Lista%20CC")
+        .then(response => response.json())
+        .then(data => {
+          // Busca la sucursal correspondiente en el JSON
+          const sucursalData = data.find(item => item['Nombre de Sucursal'] === sucursal);
 
-        // ❌ Si no se encuentra, mostrar mensaje de error
-        if (!item) {
-          document.getElementById("detalle").innerHTML = "<p>No se encontró información del equipo.</p>";
-          return;
-        }
+          if (sucursalData) {
+            // Obtén todas las imágenes de la sucursal
+            let imagenes = [];
+            if (sucursalData['Archivo']) {
+              imagenes = sucursalData['Archivo'].split(',').map(nombre =>
+                `https://raw.githubusercontent.com/piztian/SucursalesCelucenter/main/fotos/${nombre.trim()}`
+              );
+            }
 
-        // 📸 Construir HTML con datos encontrados
-        const html = `
-          <img src="${item.url_imagen}" alt="${item.archivo}">
-          <div class="marca">${item.archivo.split(' ')[0]}</div>
-          <div class="modelo">${modelo}</div>
-          <div class="precio">${item.Precio}</div>
-          <div class="caracteristicas">${item.Caracteristicas}</div>
-        `;
+            // Crea el HTML dinámico para la página de detalle
+            document.getElementById('detalleSucursal').innerHTML = `
+              <h1>Detalles de ${sucursalData['Nombre de Sucursal']}</h1>
+              <img id="imagenPrincipal" src="${imagenes[0]}" alt="${sucursalData['Nombre de Sucursal']}">
+              <p><strong>Dirección:</strong> ${sucursalData['Dirección'] || 'No disponible'}</p>
+              <p><strong>Teléfono:</strong> ${sucursalData['Teléfono de Tienda'] || 'No disponible'}</p>
+              <p><strong>Ubicación:</strong> <a href="${sucursalData['Link de Ubicación en Maps']}" target="_blank">Ver en Google Maps</a></p>
+              <div class="carrusel" id="carrusel"></div>
+            `;
 
-        // 📥 Insertar en la página
-        document.getElementById("detalle").innerHTML += html;
-      });
+            // Si hay más de una imagen, genera un carrusel
+            if (imagenes.length > 1) {
+              const carruselContainer = document.getElementById('carrusel');
+              imagenes.forEach((imagen, index) => {
+                const imgElement = document.createElement('img');
+                imgElement.src = imagen;
+                imgElement.alt = `${sucursalData['Nombre de Sucursal']} - Imagen ${index + 1}`;
+                imgElement.addEventListener('click', () => {
+                  // Al hacer clic en una imagen del carrusel, cambia la imagen principal
+                  document.getElementById('imagenPrincipal').src = imagen;
+                });
+                carruselContainer.appendChild(imgElement);
+              });
+            }
+          } else {
+            document.getElementById('detalleSucursal').innerHTML = `<p>No se encontraron detalles para la sucursal ${sucursal}.</p>`;
+          }
+        })
+        .catch(error => {
+          console.error('Error al cargar los detalles:', error);
+          document.getElementById('detalleSucursal').innerHTML = `<p>Hubo un problema al cargar los detalles. Por favor, inténtalo de nuevo más tarde.</p>`;
+        });
+    } else {
+      document.getElementById('detalleSucursal').innerHTML = `<p>No se especificó una sucursal en la URL.</p>`;
+    }
   </script>
+
 </body>
 </html>
