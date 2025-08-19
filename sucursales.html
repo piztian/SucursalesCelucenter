@@ -5,23 +5,30 @@
   <title>Sucursales Celucenter</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
+    /* 🌐 Estilo general del body */
     body {
       margin: 0;
       font-family: 'Segoe UI', sans-serif;
       background-color: #f4f4f4;
     }
+
+    /* 🧳 Estilo del título */
     h1 {
       text-align: center;
       margin: 20px;
     }
+
+    /* 🗂️ Estilo del grid donde se muestran las tarjetas */
     .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Ajuste de columnas */
       gap: 20px;
       padding: 20px;
       max-width: 1200px;
       margin: auto;
     }
+
+    /* 💳 Estilo de cada tarjeta de sucursal */
     .card {
       position: relative;
       overflow: hidden;
@@ -29,27 +36,33 @@
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
       background: white;
     }
+
+    /* 🖼️ Imagen del producto */
     .card img {
       width: 100%;
-      height: auto;
-      max-height: 250px;
+      height: 220px;
       object-fit: contain;
-      background: #fff;
-      padding: 8px;
-      transition: opacity 0.6s ease-in-out;
     }
+
+    /* 📝 Información sobre cada producto */
     .info {
       padding: 15px;
     }
+
+    /* 🏷️ Nombre de la sucursal */
     .nombre {
       font-weight: bold;
       font-size: 18px;
       margin-bottom: 6px;
     }
+
+    /* 🏠 Dirección de la sucursal */
     .direccion, .telefono {
       font-size: 14px;
       margin: 4px 0;
     }
+
+    /* 🔗 Link de Google Maps */
     .link-maps {
       display: block;
       margin-top: 8px;
@@ -57,6 +70,7 @@
       text-decoration: none;
       color: #0077cc;
     }
+
     .link-maps:hover {
       text-decoration: underline;
     }
@@ -64,64 +78,80 @@
 </head>
 <body>
 
-<h1>🏬 Sucursales Celucenter</h1>
-<div class="grid" id="catalogo"></div>
+  <!-- 🏬 Título de la página -->
+  <h1>🏬 Sucursales Celucenter</h1>
 
-<script>
-fetch("https://opensheet.elk.sh/1La-5XY4i9Ng3zpiXrre5tyAqANxpb9yuZeS8muFiZXA/Lista%20CC")
-  .then(response => response.json())
-  .then(data => {
-    const container = document.getElementById("catalogo");
+  <!-- 🔄 Contenedor para las tarjetas de sucursales -->
+  <div class="grid" id="catalogo"></div>
 
-    data.forEach((item, index) => {
-      // Construir arreglo de imágenes
-      let imagenes = [];
+  <script>
+    // 🔁 Llama a la API de OpenSheet que convierte la hoja "Lista CC" en JSON
+    fetch("https://opensheet.elk.sh/1La-5XY4i9Ng3zpiXrre5tyAqANxpb9yuZeS8muFiZXA/Lista%20CC")
+      .then(response => response.json())
+      .then(data => {
+        const container = document.getElementById("catalogo");
 
-      if (item['Archivo'] && item['Archivo'].trim() !== "") {
-        imagenes = item['Archivo'].split(',').map(nombre =>
-          `https://raw.githubusercontent.com/piztian/SucursalesCelucenter/main/fotos/${nombre.trim()}`
-        );
-      } else if (item['URL']) {
-        imagenes = [item['URL']];
-      }
+        // 🔁 Recorre cada fila del JSON (cada sucursal)
+        data.forEach((item, index) => {
+          // 📸 Generar el arreglo de imágenes, en caso de que haya varias
+          let imagenes = [];
 
-      if (imagenes.length === 0) return; // Si no hay imagen, no mostrar
-
-      const idCarrusel = `carrusel-${index}`;
-      const html = `
-        <div class="card">
-          <a href="${item['Link de Ubicación en Maps']}" target="_blank">
-            <img id="${idCarrusel}" src="${imagenes[0]}" alt="${item['Nombre de Sucursal']}">
-          </a>
-          <div class="info">
-            <div class="nombre">${item['Nombre de Sucursal'] || ''}</div>
-            <div class="direccion">${item.Dirección || ''}</div>
-            <div class="telefono">📞 ${item['Teléfono de Tienda'] || ''}</div>
-            <a class="link-maps" href="${item['Link de Ubicación en Maps']}" target="_blank">🗺️ Ver en Google Maps</a>
-          </div>
-        </div>
-      `;
-
-      container.insertAdjacentHTML("beforeend", html);
-
-      // Si hay más de una imagen, activa rotación
-      if (imagenes.length > 1) {
-        let i = 0;
-        setInterval(() => {
-          i = (i + 1) % imagenes.length;
-          const imgEl = document.getElementById(idCarrusel);
-          if (imgEl) {
-            imgEl.style.opacity = 0;
-            setTimeout(() => {
-              imgEl.src = imagenes[i];
-              imgEl.style.opacity = 1;
-            }, 300);
+          // Si hay imágenes en la columna 'Archivo', las divide y las convierte a URL
+          if (item['Archivo'] && item['Archivo'].trim() !== "") {
+            imagenes = item['Archivo'].split(',').map(nombre =>
+              `https://raw.githubusercontent.com/piztian/SucursalesCelucenter/main/fotos/${nombre.trim()}`
+            );
+          } else if (item['URL']) {
+            imagenes = [item['URL']];
           }
-        }, 3000);
-      }
-    });
-  });
-</script>
+
+          // Si no hay imágenes, no mostrar la tarjeta
+          if (imagenes.length === 0) return;
+
+          // 🔢 ID único para cada carrusel
+          const idCarrusel = `carrusel-${index}`;
+
+          // 🏷️ Estructura HTML de la tarjeta de sucursal
+          const html = `
+            <div class="card">
+              <!-- 🔗 Imagen clickeable que redirige a la página de detalle de la sucursal -->
+              <a href="https://celucentershop.bitrix24.site/crishop/detallecrishop/?sucursal=${encodeURIComponent(item['Nombre de Sucursal'])}">
+                <img id="${idCarrusel}" src="${imagenes[0]}" alt="${item['Nombre de Sucursal']}">
+              </a>
+              <div class="info">
+                <!-- Nombre de la sucursal -->
+                <div class="nombre">${item['Nombre de Sucursal'] || ''}</div>
+                <!-- Dirección de la sucursal -->
+                <div class="direccion">${item.Dirección || ''}</div>
+                <!-- Teléfono de la tienda (Omitido) -->
+                <!-- <div class="telefono">${item['Teléfono de Tienda'] || ''}</div> -->
+                <!-- Link para ver en Google Maps -->
+                <a class="link-maps" href="${item['Link de Ubicación en Maps']}" target="_blank">🗺️ Ver en Google Maps</a>
+              </div>
+            </div>
+          `;
+
+          // 🔁 Inserta la tarjeta generada dentro del contenedor
+          container.insertAdjacentHTML("beforeend", html);
+
+          // 🎠 Si hay más de una imagen, activa el carrusel
+          if (imagenes.length > 1) {
+            let i = 0;
+            setInterval(() => {
+              i = (i + 1) % imagenes.length; // Rotación de imágenes
+              const imgEl = document.getElementById(idCarrusel);
+              if (imgEl) {
+                imgEl.style.opacity = 0;
+                setTimeout(() => {
+                  imgEl.src = imagenes[i];
+                  imgEl.style.opacity = 1;
+                }, 300);
+              }
+            }, 3000);
+          }
+        });
+      });
+  </script>
 
 </body>
 </html>
