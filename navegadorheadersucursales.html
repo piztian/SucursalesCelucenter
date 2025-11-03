@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Navegador de Sucursales Celucenter</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    *{margin: 0;
+      padding: 0;
+      box-sizing: border-box;}body{font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #1a1a2e 0%, #2d2d44 50%, #1a1a2e 100%);
+      min-height: 100vh;
+      color: #fff;}body::before{content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: 
+        radial-gradient(circle at 20% 50%, rgba(255, 102, 0, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(138, 43, 226, 0.1) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: 0;}header{background: rgba(20, 20, 35, 0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 2px solid rgba(255, 102, 0, 0.3);
+      padding: 15px 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);}.container{max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 20px;}.header-content{display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;}.logo{font-size: 1.8em;
+      font-weight: 800;
+      background: linear-gradient(45deg, #ff6600, #ff1493);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      white-space: nowrap;
+      text-decoration: none;}.nav-list{display: flex;
+      list-style: none;
+      gap: 5px;
+      align-items: center;
+      flex-wrap: wrap;
+      justify-content: center;
+      flex: 1;}.nav-item{position: relative;}.nav-link{display: inline-block;
+      padding: 8px 14px;
+      color: #e0e0e0;
+      text-decoration: none;
+      font-size: 0.9em;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border-radius: 6px;
+      transition: all 0.3s ease;
+      white-space: nowrap;
+      border: 1px solid transparent;}.nav-link:hover{color: #ff6600;
+      background: rgba(255, 102, 0, 0.15);
+      border-color: rgba(255, 102, 0, 0.4);
+      box-shadow: 0 0 12px rgba(255, 102, 0, 0.3);}.toggle-btn{display: none;
+      background: none;
+      border: none;
+      color: #ff6600;
+      font-size: 1.5em;
+      cursor: pointer;
+      padding: 5px 10px;}.loading{color: #ff6600;
+      font-style: italic;}.content{padding: 40px 20px;
+      text-align: center;
+      position: relative;
+      z-index: 1;}.content h1{font-size: 2.5em;
+      margin-bottom: 20px;
+      background: linear-gradient(45deg, #ff6600, #ff1493, #ff6600);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;}.content p{font-size: 1.1em;
+      color: #b8b8d6;
+      max-width: 600px;
+      margin: 0 auto;}@media (max-width: 768px){.nav-list{display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: rgba(20, 20, 35, 0.98);
+        flex-direction: column;
+        gap: 0;
+        border-top: 1px solid rgba(255, 102, 0, 0.3);
+        padding: 15px 0;}.nav-list.active{display: flex;}.nav-item{width: 100%;}.nav-link{display: block;
+        padding: 12px 20px;
+        border-radius: 0;
+        text-align: left;}.toggle-btn{display: block;}.logo{font-size: 1.3em;}.header-content{flex-wrap: wrap;}.content h1{font-size: 1.8em;}}</style>
+</head>
+<body>
+
+  <header>
+    <div class="container">
+      <div class="header-content">
+        <a href="#" class="logo">🎃 Celucenter 👻</a>
+        <button class="toggle-btn" id="toggleBtn">☰</button>
+        <ul class="nav-list" id="navList">
+          <li class="loading" id="loadingMsg">Cargando sucursales...</li>
+        </ul>
+      </div>
+    </div>
+  </header>
+
+
+
+  <script>
+    const navList = document.getElementById('navList');
+    const toggleBtn = document.getElementById('toggleBtn');
+    
+    // Toggle del menú en móvil
+    toggleBtn.addEventListener('click', () =>{navList.classList.toggle('active');});
+    
+    // Cerrar menú al hacer clic en un enlace
+    navList.addEventListener('click', (e) =>{if (e.target.classList.contains('nav-link')){navList.classList.remove('active');}});
+    
+    // Cargar sucursales
+    fetch("https://opensheet.elk.sh/1La-5XY4i9Ng3zpiXrre5tyAqANxpb9yuZeS8muFiZXA/Lista%20CC")
+      .then(response => response.json())
+      .then(data =>{navList.innerHTML = '';
+        
+        data.forEach(item =>{const nombre = item['Nombre de Sucursal'];
+          if (nombre){const li = document.createElement('li');
+            li.className = 'nav-item';
+            
+            const a = document.createElement('a');
+            a.href = `https://celucentershop.bitrix24.site/detallesucursal/?sucursal=${encodeURIComponent(nombre)}`;
+            a.className = 'nav-link';
+            a.textContent = nombre;
+            a.target = '_self';
+            
+            li.appendChild(a);
+            navList.appendChild(li);}});})
+      .catch(error =>{console.error('Error al cargar sucursales:', error);
+        navList.innerHTML = '<li class="loading">Error al cargar sucursales</li>';});
+  </script>
+
+</body>
+</html>
