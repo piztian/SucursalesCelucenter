@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Detalle Sucursal</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    *{margin: 0;
+      padding: 0;
+      box-sizing: border-box;}body{font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 50%, #0f1229 100%);
+      min-height: 100vh;
+      color: #fff;
+      padding: 20px;}body::before{content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: 
+        radial-gradient(circle at 20% 50%, rgba(0, 188, 212, 0.08) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(33, 150, 243, 0.08) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: 0;}.detalle{max-width: 900px;
+      margin: auto;
+      background: rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(10px);
+      border: 2px solid rgba(0, 188, 212, 0.3);
+      padding: 40px 30px;
+      border-radius: 15px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(0, 188, 212, 0.1);
+      position: relative;
+      z-index: 1;}.detalle h1{font-size: 2.5em;
+      text-align: center;
+      margin-bottom: 30px;
+      background: linear-gradient(45deg, #00bcd4, #2196f3, #00bcd4);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-shadow: 0 0 30px rgba(0, 188, 212, 0.5);}.imagen-principal{width: 100%;
+      height: 350px;
+      object-fit: contain;
+      border-radius: 12px;
+      margin-bottom: 30px;
+      background: linear-gradient(135deg, rgba(0, 188, 212, 0.08), rgba(33, 150, 243, 0.08));
+      padding: 20px;
+      border: 1px solid rgba(0, 188, 212, 0.2);
+      transition: all 0.3s ease;}.imagen-principal:hover{border-color: rgba(0, 188, 212, 0.5);
+      box-shadow: 0 0 20px rgba(0, 188, 212, 0.3);}.info-section{margin: 20px 0;
+      padding: 15px;
+      background: rgba(0, 188, 212, 0.08);
+      border-left: 4px solid #00bcd4;
+      border-radius: 8px;
+      border: 2px solid rgba(0, 188, 212, 0.2);}.info-section strong{color: #00bcd4;
+      font-size: 1.1em;}.info-section p{font-size: 1em;
+      margin: 8px 0;
+      color: #b0bec5;}.button-group{display: flex;
+      gap: 12px;
+      margin-top: 25px;
+      flex-wrap: wrap;
+      justify-content: center;}.btn{display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 24px;
+      font-size: 1em;
+      text-decoration: none;
+      color: #fff;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      border: 2px solid;
+      position: relative;
+      z-index: 2;
+      min-width: 150px;
+      font-weight: 600;}.btn-maps{background: linear-gradient(135deg, #00bcd4, #0097a7);
+      border-color: rgba(0, 188, 212, 0.5);}.btn-maps:hover{background: linear-gradient(135deg, #0097a7, #00bcd4);
+      box-shadow: 0 0 20px rgba(0, 188, 212, 0.6);
+      transform: translateY(-3px);}.btn-whatsapp{background: linear-gradient(135deg, #25D366, #34D399);
+      border-color: rgba(37, 211, 102, 0.5);}.btn-whatsapp:hover{background: linear-gradient(135deg, #34D399, #25D366);
+      box-shadow: 0 0 20px rgba(37, 211, 102, 0.6);
+      transform: translateY(-3px);}.btn-spotify{background: linear-gradient(135deg, #1DB954, #1ed760);
+      border-color: rgba(29, 185, 84, 0.5);}.btn-spotify:hover{background: linear-gradient(135deg, #1ed760, #1DB954);
+      box-shadow: 0 0 20px rgba(29, 185, 84, 0.6);
+      transform: translateY(-3px);}.btn:disabled{opacity: 0.5;
+      cursor: not-allowed;
+      transform: none !important;}.carrusel{display: flex;
+      gap: 12px;
+      justify-content: center;
+      margin-top: 30px;
+      flex-wrap: wrap;}.carrusel-controls{display: flex;
+      gap: 15px;
+      justify-content: center;
+      margin-bottom: 20px;
+      align-items: center;}.btn-carrusel{padding: 10px 20px;
+      background: linear-gradient(135deg, #00bcd4, #0097a7);
+      border: 2px solid rgba(0, 188, 212, 0.5);
+      color: #fff;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.95em;
+      transition: all 0.3s ease;}.btn-carrusel:hover{background: linear-gradient(135deg, #0097a7, #00bcd4);
+      box-shadow: 0 0 20px rgba(0, 188, 212, 0.6);
+      transform: translateY(-2px);}.btn-carrusel:disabled{opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;}.carrusel-info{color: #00bcd4;
+      font-weight: 600;
+      font-size: 0.9em;
+      min-width: 80px;}.carrusel img{width: 120px;
+      height: 120px;
+      object-fit: contain;
+      cursor: pointer;
+      border-radius: 8px;
+      border: 2px solid rgba(0, 188, 212, 0.3);
+      transition: all 0.3s ease;
+      padding: 8px;
+      background: rgba(0, 188, 212, 0.05);}.carrusel img:hover{border-color: rgba(0, 188, 212, 0.8);
+      box-shadow: 0 0 15px rgba(0, 188, 212, 0.4);
+      transform: scale(1.05);}.back-link{display: inline-block;
+      margin-bottom: 20px;
+      padding: 10px 20px;
+      background: rgba(0, 188, 212, 0.15);
+      border: 1px solid rgba(0, 188, 212, 0.5);
+      border-radius: 8px;
+      color: #00bcd4;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      position: relative;
+      z-index: 1;}.back-link:hover{background: rgba(0, 188, 212, 0.25);
+      box-shadow: 0 0 15px rgba(0, 188, 212, 0.4);}@media (max-width: 768px){.detalle{padding: 20px;}.detalle h1{font-size: 1.8em;}.imagen-principal{height: 250px;}.button-group{flex-direction: column;}.btn{width: 100%;}.carrusel img{width: 100px;
+        height: 100px;}}</style>
+</head>
+<body>
+
+  <a href="javascript:history.back()" class="back-link">← Volver</a>
+
+  <div class="detalle" id="detalleSucursal">
+    <h1>Cargando...</h1>
+    <p style="text-align: center; color: #b0bec5;">Por favor, espere mientras se cargan los detalles de la sucursal...</p>
+  </div>
+
+  <script>
+    // Captura el parámetro 'sucursal' de la URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const sucursal = urlParams.get('sucursal');
+
+    // Verifica si el parámetro 'sucursal' existe
+    if (sucursal){// Llama a la API de OpenSheet que convierte la hoja "Lista CC" en JSON
+      fetch("https://opensheet.elk.sh/1La-5XY4i9Ng3zpiXrre5tyAqANxpb9yuZeS8muFiZXA/Lista%20CC")
+        .then(response => response.json())
+        .then(data =>{// Busca la sucursal correspondiente en el JSON
+          const sucursalData = data.find(item => item['Nombre de Sucursal']=== sucursal);
+
+          if (sucursalData){// Obtén todas las imágenes de la sucursal
+            let imagenes =[];
+            if (sucursalData['Archivo']){imagenes = sucursalData['Archivo'].split(',').map(nombre =>
+                `https://raw.githubusercontent.com/piztian/SucursalesCelucenter/main/fotos/${nombre.trim()}`
+              );}const waLink = sucursalData['Walink']|| '';
+            const btnWhatsapp = waLink ? `<a href="${waLink}" target="_blank" class="btn btn-whatsapp">💬 WhatsApp</a>` : '<button class="btn" disabled>💬 WhatsApp</button>';
+            const btnSpotify = waLink ? `<a href="${waLink}" target="_blank" class="btn btn-spotify">🎵 Spotify</a>` : '<button class="btn" disabled>🎵 Spotify</button>';
+
+            // Crea el HTML dinámico para la página de detalle
+            document.getElementById('detalleSucursal').innerHTML = `
+              <h1>⚡ ${sucursalData['Nombre de Sucursal']}🌐</h1>
+              <img id="imagenPrincipal" class="imagen-principal" src="${imagenes[0]|| ''}" alt="${sucursalData['Nombre de Sucursal']}">
+              
+              <div class="info-section">
+                <strong>📍 Dirección</strong>
+                <p>${sucursalData['Dirección']|| 'No disponible'}</p>
+              </div>
+
+              <div class="button-group">
+                <a href="${sucursalData['Link de Ubicación en Maps']}" target="_blank" class="btn btn-maps">🗺️ Ver en Maps</a>
+                ${btnWhatsapp}${btnSpotify}</div>
+
+              <div class="carrusel-controls" id="carruselControls" style="display: none;">
+                <button class="btn-carrusel" id="btnAnterior">⬅️ Anterior</button>
+                <span class="carrusel-info"><span id="imagenActual">1</span> / <span id="totalImagenes">1</span></span>
+                <button class="btn-carrusel" id="btnSiguiente">Siguiente ➡️</button>
+              </div>
+
+              <div class="carrusel" id="carrusel"></div>
+            `;
+
+            // Si hay más de una imagen, genera un carrusel
+            if (imagenes.length > 1){const carruselContainer = document.getElementById('carrusel');
+              const carruselControls = document.getElementById('carruselControls');
+              const btnAnterior = document.getElementById('btnAnterior');
+              const btnSiguiente = document.getElementById('btnSiguiente');
+              const imagenActual = document.getElementById('imagenActual');
+              const totalImagenes = document.getElementById('totalImagenes');
+              
+              carruselControls.style.display = 'flex';
+              totalImagenes.textContent = imagenes.length;
+              
+              let indiceActual = 0;
+              let autoPlayInterval;
+              
+              // Función para actualizar la imagen
+              const actualizarImagen = (indice) =>{indiceActual = indice;
+                document.getElementById('imagenPrincipal').src = imagenes[indice];
+                imagenActual.textContent = indice + 1;};
+              
+              // Función para siguiente imagen
+              const siguiente = () =>{let nuevoIndice = (indiceActual + 1) % imagenes.length;
+                actualizarImagen(nuevoIndice);
+                reiniciarAutoPlay();};
+              
+              // Función para imagen anterior
+              const anterior = () =>{let nuevoIndice = (indiceActual - 1 + imagenes.length) % imagenes.length;
+                actualizarImagen(nuevoIndice);
+                reiniciarAutoPlay();};
+              
+              // Función para reiniciar autoplay
+              const reiniciarAutoPlay = () =>{clearInterval(autoPlayInterval);
+                autoPlayInterval = setInterval(siguiente, 5000);};
+              
+              // Event listeners de botones
+              btnSiguiente.addEventListener('click', siguiente);
+              btnAnterior.addEventListener('click', anterior);
+              
+              // Crear elementos del carrusel
+              imagenes.forEach((imagen, index) =>{const imgElement = document.createElement('img');
+                imgElement.src = imagen;
+                imgElement.alt = `${sucursalData['Nombre de Sucursal']}- Imagen ${index + 1}`;
+                imgElement.addEventListener('click', () =>{actualizarImagen(index);
+                  reiniciarAutoPlay();});
+                carruselContainer.appendChild(imgElement);});
+              
+              // Iniciar autoplay
+              autoPlayInterval = setInterval(siguiente, 5000);}}else{document.getElementById('detalleSucursal').innerHTML = `<h1>No encontrada</h1><p style="color: #b0bec5;">No se encontraron detalles para la sucursal "${sucursal}".</p>`;}})
+        .catch(error =>{console.error('Error al cargar los detalles:', error);
+          document.getElementById('detalleSucursal').innerHTML = `<h1>Error</h1><p style="color: #b0bec5;">Hubo un problema al cargar los detalles. Por favor, inténtalo de nuevo más tarde.</p>`;});}else{document.getElementById('detalleSucursal').innerHTML = `<h1>Error</h1><p style="color: #b0bec5;">No se especificó una sucursal en la URL.</p>`;}</script>
+
+</body>
+</html>
