@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>CeluCenter – Ruleta de Cliente</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body {
+    margin: 0;
+    background: radial-gradient(circle at top, #0A111C, #000);
+    font-family: Arial, sans-serif;
+    color: white;
+    text-align: center;
+}
+
+/* Ruleta */
+.ruleta-container {
+    width: 360px;
+    height: 360px;
+    border-radius: 50%;
+    border: 10px solid #001B41;
+    margin: 20px auto;
+    position: relative;
+    overflow: hidden;
+    background: #001B41;
+    box-shadow: 0 0 25px #000a;
+}
+
+.indicador {
+    width: 0;
+    height: 0;
+    border-left: 18px solid transparent;
+    border-right: 18px solid transparent;
+    border-bottom: 28px solid #FFD176;
+    position: absolute;
+    top: -5px;
+    left: calc(50% - 18px);
+    z-index: 20;
+}
+
+#ruleta {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    transition: transform 5s cubic-bezier(0.12, 0.07, 0.1, 1);
+}
+
+.luz {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #FFD176;
+    position: absolute;
+    animation: luz 1.2s infinite alternate;
+}
+@keyframes luz {
+    0% { opacity: .4; transform: scale(0.8);}
+    100% { opacity: 1; transform: scale(1);}
+}
+
+#btnGirar {
+    margin-top: 10px;
+    padding: 12px 26px;
+    background: #0066FF;
+    border: none;
+    border-radius: 12px;
+    font-size: 18px;
+    color: white;
+    cursor: pointer;
+}
+#btnGirar:disabled {
+    background: #444;
+    cursor: not-allowed;
+}
+
+/* Boleto */
+.overlay {
+    display: none;
+    position: fixed;
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    background: #000d;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.card-premio {
+    width: 320px;
+    background: #FFFFFF;
+    color: #001B41;
+    padding: 20px;
+    border-radius: 16px;
+    border: 2px dashed #FFD176;
+    box-shadow: 0 0 20px #ffd17680;
+    animation: pop .4s ease;
+    text-align: left;
+}
+@keyframes pop {
+    0% { transform: scale(0.4); opacity: 0;}
+    100% { transform: scale(1); opacity: 1;}
+}
+
+.boleto-btn {
+    display: inline-block;
+    padding: 9px 17px;
+    background: #001B41;
+    color: white;
+    border-radius: 10px;
+    margin-top: 15px;
+    cursor: pointer;
+    border: none;
+}
+</style>
+</head>
+
+<body>
+
+<!-- CONTENIDO PRINCIPAL -->
+<div id="mainBox">
+    <h1>🎉 ¡Gracias por tu compra en CeluCenter!</h1>
+    <p>Después de tu compra, gira la ruleta y gana un descuento en accesorios, bocinas u otros productos.</p>
+    <p id="sucursalText" style="color:#FFD176;margin-top:-10px;"></p>
+
+    <div class="ruleta-container" id="ruletaBox">
+        <div class="indicador"></div>
+        <img id="ruleta" src="https://raw.githubusercontent.com/piztian/SucursalesCelucenter/main/fotos/ruleta/ruleta%20celucenter.png">
+    </div>
+
+    <button id="btnGirar">🎡 Girar Ruleta</button>
+</div>
+
+<!-- BOLETO -->
+<div class="overlay" id="overlay">
+    <div class="card-premio" id="boleto">
+        <h2>🎟 Boleto de descuento CeluCenter</h2>
+
+        <p><b>Sucursal:</b> <span id="bSucursal"></span></p>
+        <p><b>Premio:</b> <span id="bPremio"></span></p>
+        <p><b>Fecha:</b> <span id="bFecha"></span></p>
+        <p><b>Folio:</b> <span id="bFolio"></span></p>
+
+        <p style="font-size: 13px; margin-top: 12px; color:#333;">
+        📸 <b>Toma una captura de este boleto</b> y muéstralo en caja para que te apliquen tu descuento.
+        <br><br>
+        Si necesitas apoyo, mándanos WhatsApp:
+        <br><br>
+        <a id="waBoleto" style="color:#001B41; font-weight:bold;" target="_blank" rel="noopener">
+           📲 +52 341 330 0001
+        </a>
+        </p>
+
+        <button class="boleto-btn" onclick="cerrarBoleto()">Cerrar</button>
+    </div>
+</div>
+
+<!-- BOTÓN RESET (para pruebas: permite girar de nuevo sin recargar) -->
+<button id="btnResetPruebas"
+        style="position:fixed;bottom:10px;right:10px;opacity:0.10;font-size:10px;">
+RESET
+</button>
+
+<script>
+// ===============================
+// CONFIGURACIÓN
+// ===============================
+
+// URL de tu Apps Script publicado como Web App (la cambias tú)
+const SCRIPT_URL = "const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx1234567890xyz/exec";
+"; // <-- REEMPLAZA ESTO
+
+// Teléfono de contacto WhatsApp (formato 52 + lada + número sin espacios)
+const WHATSAPP_NUM = "523413300001";
+
+// Premios y probabilidades (puedes ajustar)
+const premios = [
+    {nombre:"20% de descuento", prob:50},
+    {nombre:"15% de descuento", prob:25},
+    {nombre:"10% de descuento", prob:15},
+    {nombre:"5% de descuento",  prob:5},
+    {nombre:"25% de descuento", prob:5}
+];
+
+// ===============================
+// OBTENER SUCURSAL DESDE EL LINK
+// ===============================
+// Ejemplo de link:
+// https://tudominio.com/ruleta.html?sucursal=Atequiza
+
+const urlParams = new URLSearchParams(window.location.search);
+const sucursal = urlParams.get("sucursal") || "SIN_SUCURSAL";
+
+document.getElementById("sucursalText").textContent = "Sucursal: " + sucursal;
+
+// ===============================
+// CREAR LUCES ALREDEDOR DE LA RULETA
+// ===============================
+const cont = document.getElementById("ruletaBox");
+for (let i = 0; i < 24; i++) {
+    const luz = document.createElement("div");
+    luz.className = "luz";
+    const a = (360 / 24) * i;
+    const x = 180 + 150 * Math.cos((a - 90) * Math.PI / 180);
+    const y = 180 + 150 * Math.sin((a - 90) * Math.PI / 180);
+    luz.style.left = x + "px";
+    luz.style.top = y + "px";
+    luz.style.animationDelay = (i * .05) + "s";
+    cont.appendChild(luz);
+}
+
+// ===============================
+// FUNCIONES DE PREMIO Y FOLIO
+// ===============================
+function premioAleatorio() {
+    let total = premios.reduce((s, p) => s + p.prob, 0);
+    let r = Math.random() * total, acum = 0;
+    for (let p of premios) {
+        acum += p.prob;
+        if (r <= acum) return p.nombre;
+    }
+}
+
+function generarFolio() {
+    return "CC-" + Math.random().toString(36).substring(2, 8).toUpperCase();
+}
+
+// ===============================
+// GIRO DE LA RULETA
+// ===============================
+let girando = false;
+document.getElementById("btnGirar").onclick = () => {
+    if (girando) return;
+    girando = true;
+    const ruleta = document.getElementById("ruleta");
+    const premio = premioAleatorio();
+    const index = premios.findIndex(p => p.nombre === premio);
+    const grados = 360 / premios.length;
+    const giro = (360 * 5) - (index * grados) - (grados / 2);
+    ruleta.style.transform = `rotate(${giro}deg)`;
+
+    setTimeout(() => {
+        const fecha = new Date().toLocaleDateString("es-MX");
+        const folio = generarFolio();
+
+        // Mostrar boleto
+        document.getElementById("bSucursal").textContent = sucursal;
+        document.getElementById("bPremio").textContent = premio;
+        document.getElementById("bFecha").textContent = fecha;
+        document.getElementById("bFolio").textContent = folio;
+        document.getElementById("overlay").style.display = "flex";
+
+        // WhatsApp con sucursal, premio y folio
+        const mensajeWA = encodeURIComponent(
+            "Hola, estoy en la sucursal " + sucursal + " y acabo de ganar un descuento en la ruleta de CeluCenter.\n" +
+            "Premio: " + premio + "\n" +
+            "Folio: " + folio + "\n" +
+            "¡Gracias!"
+        );
+        const waURL = "https://wa.me/" + WHATSAPP_NUM + "?text=" + mensajeWA;
+        document.getElementById("waBoleto").href = waURL;
+
+        // Registrar en Google Sheets (Apps Script)
+        enviarRegistroASheets({
+            sucursal,
+            premio,
+            fecha,
+            folio,
+            timestamp: new Date().toISOString(),
+            userAgent: navigator.userAgent
+        });
+
+        document.getElementById("btnGirar").disabled = true; // 1 giro por cliente (por recarga)
+        girando = false;
+    }, 5000);
+};
+
+function cerrarBoleto() {
+    document.getElementById("overlay").style.display = "none";
+}
+
+// ===============================
+// RESET SOLO PARA PRUEBAS EN TIENDA
+// ===============================
+document.getElementById("btnResetPruebas").onclick = () => {
+    document.getElementById("overlay").style.display = "none";
+    document.getElementById("btnGirar").disabled = false;
+};
+
+// ===============================
+// ENVIAR REGISTRO A GOOGLE SHEETS
+// ===============================
+function enviarRegistroASheets(data) {
+    if (!SCRIPT_URL || SCRIPT_URL.includes("TU_ID_DE_WEBAPP")) {
+        console.warn("SCRIPT_URL no configurado.");
+        return;
+    }
+
+    fetch(SCRIPT_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+    }).catch(err => {
+        console.error("Error enviando datos a Sheets:", err);
+    });
+}
+</script>
+
+</body>
+</html>
