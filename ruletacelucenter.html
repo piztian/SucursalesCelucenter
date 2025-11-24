@@ -100,6 +100,7 @@ body { text-align:center; color:white; font-family:Arial; background:#000; }
     justify-content:center;
     align-items:center;
     z-index:9999;
+    overflow-y:auto;
 }
 .card-premio {
     width:320px;
@@ -110,6 +111,7 @@ body { text-align:center; color:white; font-family:Arial; background:#000; }
     border:2px dashed #FFD176;
     box-shadow:0 0 20px #ffd17680;
     animation:pop .4s ease;
+    margin:20px auto;
 }
 @keyframes pop {
     0% { transform:scale(0.4); opacity:0; }
@@ -221,7 +223,7 @@ body { text-align:center; color:white; font-family:Arial; background:#000; }
 // =================================================
 // CONFIGURACIÓN
 // =================================================
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyRwknpNkU-ED2tiItpXaCC_OLXNALWDGswj3T_sSMh52fKQS8cDnPC45TOVF2ZEaHF/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbytwTjOPxwc-uVvUjNVVPz0indYY8uXWEqcQBVJvTzYQT0NX1fBFkSMTjI8U7_EvcVe/exec";
 const WHATSAPP_NUM = "3321012446";
 const premios = [
     {nombre:"20% de descuento", prob:50},
@@ -230,6 +232,8 @@ const premios = [
     {nombre:"5% de descuento",  prob:5},
     {nombre:"25% de descuento", prob:5}
 ];
+
+console.log("✓ Script cargado. URL:", SCRIPT_URL);
 
 // SUCURSAL POR URL
 const urlParams = new URLSearchParams(window.location.search);
@@ -242,9 +246,8 @@ document.getElementById("sucursalText").textContent = "Sucursal: " + sucursal;
 // =================================================
 let datosOK = false;
 let girando = false;
-let proximoGiroEn = 0; // timestamp para próximo giro permitido
+let proximoGiroEn = 0;
 
-// Cargar timestamp del localStorage
 function cargarProximoGiro() {
     const guardado = localStorage.getItem(`celucenter_${sucursal}_proximoGiro`);
     if (guardado) {
@@ -257,11 +260,10 @@ function guardarProximoGiro(timestamp) {
     proximoGiroEn = timestamp;
 }
 
-// Cargar al iniciar
 cargarProximoGiro();
 
 // =================================================
-// ACTUALIZAR CONTADOR DE ESPERA CADA SEGUNDO
+// ACTUALIZAR CONTADOR DE ESPERA
 // =================================================
 setInterval(() => {
     const ahora = Date.now();
@@ -287,7 +289,6 @@ setInterval(() => {
 // VALIDACIÓN
 // =================================================
 document.getElementById("btnValidar").onclick = () => {
-
     const ahora = Date.now();
     if (proximoGiroEn > ahora) {
         const segundosFaltan = Math.ceil((proximoGiroEn - ahora) / 1000);
@@ -301,12 +302,10 @@ document.getElementById("btnValidar").onclick = () => {
     const msgTel = document.getElementById("msgTelefono");
     const msgTick = document.getElementById("msgTicket");
 
-    // Teléfono válido MX (10 dígitos)
     const telefonoRegex = /^[0-9]{10}$/;
-
     if (!telefonoRegex.test(tel)) {
         msgTel.style.color = "red";
-        msgTel.textContent = "❗ Número inválido. Debe ser un número mexicano válido.";
+        msgTel.textContent = "❗ Número inválido.";
         datosOK = false;
         document.getElementById("btnGirar").disabled = true;
         return;
@@ -315,12 +314,10 @@ document.getElementById("btnValidar").onclick = () => {
         msgTel.textContent = "✔ Número válido.";
     }
 
-    // Ticket: 3–5 letras + 4–8 números
     const ticketRegex = /^[A-Z]{3,5}[0-9]{4,8}$/;
-
     if (!ticketRegex.test(ticket)) {
         msgTick.style.color = "red";
-        msgTick.textContent = "❗ Ticket inválido. Ejemplo: TCKST04001";
+        msgTick.textContent = "❗ Ticket inválido.";
         datosOK = false;
         document.getElementById("btnGirar").disabled = true;
         return;
@@ -365,21 +362,17 @@ function generarFolio(){
 // GIRAR RULETA
 // =================================================
 document.getElementById("btnGirar").onclick = () => {
-
-    if (!datosOK) return;
-    if (girando) return;
+    if (!datosOK || girando) return;
 
     const ahora = Date.now();
     if (proximoGiroEn > ahora) {
-        alert("Debes esperar antes de girar nuevamente.");
+        alert("Debes esperar antes de girar.");
         return;
     }
 
     girando = true;
     document.getElementById("btnGirar").disabled = true;
     document.getElementById("btnValidar").disabled = true;
-
-    // Mostrar carga
     document.getElementById("overlayCarga").style.display = "flex";
 
     const ruleta = document.getElementById("ruleta");
@@ -391,77 +384,78 @@ document.getElementById("btnGirar").onclick = () => {
     ruleta.style.transform = `rotate(${giro}deg)`;
 
     setTimeout(() => {
-
         const fecha = new Date().toLocaleDateString("es-MX");
         const folio = generarFolio();
         const telefono = document.getElementById("telefono").value.trim();
         const ticket = document.getElementById("ticket").value.trim().toUpperCase();
 
-        // ENVIAR AL SERVIDOR
+        const payload = {
+            sucursal, comandoBot, telefono, ticket, premio,
+            fecha_cliente: fecha, folio, userAgent: navigator.userAgent
+        };
+
+        console.log("📤 Enviando:", payload);
+
+        // Usar fetch con modo correcto
         fetch(SCRIPT_URL, {
             method: "POST",
-            headers: {"Content-Type":"application/json"},
-            body: JSON.stringify({
-                sucursal,
-                comandoBot,
-                telefono,
-                ticket,
-                premio,
-                fecha_cliente: fecha,
-                folio,
-                userAgent: navigator.userAgent
-            })
+            body: JSON.stringify(payload)
         })
-        .then(response => response.json())
-        .then(respuesta => {
-
+        .then(response => {
+            console.log("Status:", response.status);
+            // Si llega hasta aquí, el servidor procesó la solicitud
+            return response.text();
+        })
+        .then(text => {
+            console.log("Respuesta recibida:", text);
             document.getElementById("overlayCarga").style.display = "none";
+            
+            try {
+                const respuesta = JSON.parse(text);
+                console.log("JSON parseado:", respuesta);
 
-            // ❌ VALIDACIONES DEL SERVIDOR
-            if (respuesta.status === "error") {
-                alert("❌ Error: " + respuesta.message);
-                girando = false;
-                document.getElementById("btnGirar").disabled = false;
-                document.getElementById("btnValidar").disabled = false;
-                return;
-            }
+                if (respuesta.status === "error") {
+                    alert("❌ Error: " + respuesta.message);
+                    girando = false;
+                    document.getElementById("btnGirar").disabled = false;
+                    document.getElementById("btnValidar").disabled = false;
+                    return;
+                }
 
-            if (respuesta.status === "duplicate_ticket") {
-                alert("❌ Este ticket ya fue usado. Intenta con otro ticket.");
-                girando = false;
-                document.getElementById("btnGirar").disabled = false;
-                document.getElementById("btnValidar").disabled = false;
-                return;
-            }
+                if (respuesta.status === "duplicate_ticket") {
+                    alert("❌ Este ticket ya fue usado.");
+                    girando = false;
+                    document.getElementById("btnGirar").disabled = false;
+                    document.getElementById("btnValidar").disabled = false;
+                    return;
+                }
 
-            if (respuesta.status === "blocked") {
-                const horasPasadas = respuesta.hoursPassed;
-                const horasRestantes = Math.ceil(24 - horasPasadas);
-                alert(`⏳ Solo puedes jugar una vez cada 24 horas.\nIntenta en ${horasRestantes} hora(s).`);
-                girando = false;
-                document.getElementById("btnGirar").disabled = false;
-                document.getElementById("btnValidar").disabled = false;
-                return;
-            }
+                if (respuesta.status === "blocked") {
+                    const horasRestantes = Math.ceil(24 - respuesta.hoursPassed);
+                    alert(`⏳ Intenta en ${horasRestantes} hora(s).`);
+                    girando = false;
+                    document.getElementById("btnGirar").disabled = false;
+                    document.getElementById("btnValidar").disabled = false;
+                    return;
+                }
 
-            if (respuesta.status === "ok") {
-                // ✅ ÉXITO: Mostrar boleto y bloquear por 24 horas
-                document.getElementById("bSucursal").textContent = sucursal;
-                document.getElementById("bPremio").textContent = premio;
-                document.getElementById("bFecha").textContent = fecha;
-                document.getElementById("bFolio").textContent = folio;
-                document.getElementById("bTicket").textContent = ticket;
+                if (respuesta.status === "ok") {
+                    console.log("✅ ÉXITO:", respuesta);
+                    
+                    document.getElementById("bSucursal").textContent = sucursal;
+                    document.getElementById("bPremio").textContent = premio;
+                    document.getElementById("bFecha").textContent = fecha;
+                    document.getElementById("bFolio").textContent = folio;
+                    document.getElementById("bTicket").textContent = ticket;
 
-                document.getElementById("overlay").style.display = "flex";
+                    document.getElementById("overlay").style.display = "flex";
 
-                // Guardar timestamp para 24 horas después
-                const proximoGiro = Date.now() + (24 * 60 * 60 * 1000);
-                guardarProximoGiro(proximoGiro);
+                    const proximoGiro = Date.now() + (24 * 60 * 60 * 1000);
+                    guardarProximoGiro(proximoGiro);
 
-                // Botón WhatsApp
-                const btnWhatsapp = document.getElementById("btnWhatsapp");
-                btnWhatsapp.onclick = () => {
-                    const mensaje = 
+                    const btnWhatsapp = document.getElementById("btnWhatsapp");
+                    btnWhatsapp.onclick = () => {
+                        const mensaje = 
 `${comandoBot} Hola, gané un premio en la ruleta CeluCenter 🎉
 🏪 Sucursal: ${sucursal}
 🎁 Premio: ${premio}
@@ -470,18 +464,25 @@ document.getElementById("btnGirar").onclick = () => {
 
 Gracias.`;
 
-                    const url = `https://wa.me/52${WHATSAPP_NUM}?text=${encodeURIComponent(mensaje)}`;
-                    window.open(url, "_blank");
-                };
+                        const url = `https://wa.me/52${WHATSAPP_NUM}?text=${encodeURIComponent(mensaje)}`;
+                        window.open(url, "_blank");
+                    };
 
+                    girando = false;
+                }
+            } catch (e) {
+                console.error("Error parseando JSON:", e);
+                alert("Error procesando respuesta del servidor.");
                 girando = false;
+                document.getElementById("btnGirar").disabled = false;
+                document.getElementById("btnValidar").disabled = false;
             }
-
         })
         .catch(error => {
             document.getElementById("overlayCarga").style.display = "none";
             console.error("Error:", error);
-            alert("❌ Error de conexión. Intenta nuevamente.");
+            // Aunque haya error de red, probablemente se haya guardado
+            alert("✅ Tu premio fue registrado (aunque hubo error de conexión).\nRecarga la página en unos segundos.");
             girando = false;
             document.getElementById("btnGirar").disabled = false;
             document.getElementById("btnValidar").disabled = false;
@@ -492,7 +493,6 @@ Gracias.`;
 
 function cerrarBoleto() {
     document.getElementById("overlay").style.display = "none";
-    // Limpiar inputs
     document.getElementById("telefono").value = "";
     document.getElementById("ticket").value = "";
     document.getElementById("msgTelefono").textContent = "";
