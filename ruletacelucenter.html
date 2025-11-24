@@ -204,7 +204,6 @@ body { text-align:center; color:white; font-family:Arial; background:#000; }
 
         <p style="font-size:13px;color:#333;margin-top:10px;">
          📸 Toma captura de este boleto y muéstralo en caja.
-            Válido solo en accesorios (micas, fundas, cables, cargadores, audífonos). No aplica en celulares ni servicios.
         </p>
 
         <button class="boleto-btn" id="btnWhatsapp">📲 Enviar por WhatsApp</button>
@@ -247,55 +246,11 @@ document.getElementById("sucursalText").textContent = "Sucursal: " + sucursal;
 // =================================================
 let datosOK = false;
 let girando = false;
-let proximoGiroEn = 0;
-
-function cargarProximoGiro() {
-    const guardado = localStorage.getItem(`celucenter_${sucursal}_proximoGiro`);
-    if (guardado) {
-        proximoGiroEn = parseInt(guardado);
-    }
-}
-
-function guardarProximoGiro(timestamp) {
-    localStorage.setItem(`celucenter_${sucursal}_proximoGiro`, timestamp.toString());
-    proximoGiroEn = timestamp;
-}
-
-cargarProximoGiro();
-
-// =================================================
-// ACTUALIZAR CONTADOR DE ESPERA
-// =================================================
-setInterval(() => {
-    const ahora = Date.now();
-    if (proximoGiroEn > ahora) {
-        const segundosFaltan = Math.ceil((proximoGiroEn - ahora) / 1000);
-        const minutos = Math.floor(segundosFaltan / 60);
-        const segundos = segundosFaltan % 60;
-        
-        document.getElementById("msgEspera").textContent = 
-            `⏳ Debes esperar: ${minutos}m ${segundos}s`;
-        document.getElementById("btnValidar").disabled = true;
-        document.getElementById("btnGirar").disabled = true;
-    } else {
-        document.getElementById("msgEspera").textContent = "";
-        document.getElementById("btnValidar").disabled = false;
-        if (datosOK) {
-            document.getElementById("btnGirar").disabled = false;
-        }
-    }
-}, 1000);
 
 // =================================================
 // VALIDACIÓN
 // =================================================
 document.getElementById("btnValidar").onclick = () => {
-    const ahora = Date.now();
-    if (proximoGiroEn > ahora) {
-        const segundosFaltan = Math.ceil((proximoGiroEn - ahora) / 1000);
-        alert(`Debes esperar ${segundosFaltan} segundos más.`);
-        return;
-    }
 
     const tel = document.getElementById("telefono").value.trim();
     const ticket = document.getElementById("ticket").value.trim().toUpperCase();
@@ -364,12 +319,6 @@ function generarFolio(){
 // =================================================
 document.getElementById("btnGirar").onclick = () => {
     if (!datosOK || girando) return;
-
-    const ahora = Date.now();
-    if (proximoGiroEn > ahora) {
-        alert("Debes esperar antes de girar.");
-        return;
-    }
 
     girando = true;
     document.getElementById("btnGirar").disabled = true;
@@ -450,9 +399,6 @@ document.getElementById("btnGirar").onclick = () => {
                     document.getElementById("bTicket").textContent = ticket;
 
                     document.getElementById("overlay").style.display = "flex";
-
-                    const proximoGiro = Date.now() + (24 * 60 * 60 * 1000);
-                    guardarProximoGiro(proximoGiro);
 
                     const btnWhatsapp = document.getElementById("btnWhatsapp");
                     btnWhatsapp.onclick = () => {
