@@ -1,9 +1,14 @@
-<!-- ============================================
-     RULETA CELUCENTER - CÓDIGO FINAL COMPLETO
-     ============================================ -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>CeluCenter – Ruleta</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-body { text-align:center; color:white; font-family:Arial; }
+body { text-align:center; color:white; font-family:Arial; background:#000; }
+
+/* RUETA */
 .ruleta-container {
     width: 360px;
     height: 360px;
@@ -41,9 +46,10 @@ body { text-align:center; color:white; font-family:Arial; }
     animation: luz 1.2s infinite alternate;
 }
 @keyframes luz {
-    0% { opacity: .4; transform: scale(0.8);}
-    100% { opacity: 1; transform: scale(1);}
+    0% { opacity: .4; transform: scale(0.8); }
+    100% { opacity: 1; transform: scale(1); }
 }
+
 #btnGirar {
     margin-top: 10px;
     padding: 12px 26px;
@@ -58,6 +64,33 @@ body { text-align:center; color:white; font-family:Arial; }
     background: #444;
     cursor: not-allowed;
 }
+
+/* Inputs */
+.input-field {
+    width: 260px;
+    padding: 12px;
+    border-radius: 12px;
+    border: 2px solid #0066FF;
+    font-size: 16px;
+    margin-top: 10px;
+    text-transform: uppercase;
+}
+.btn-validar {
+    margin-top: 10px;
+    padding: 10px 22px;
+    background: #001B41;
+    color:white;
+    border:none;
+    border-radius: 12px;
+    cursor:pointer;
+    font-size: 17px;
+}
+#msgTelefono, #msgTicket {
+    margin-top:8px;
+    font-size:14px;
+}
+
+/* Boleto */
 .overlay {
     display:none;
     position:fixed;
@@ -79,8 +112,8 @@ body { text-align:center; color:white; font-family:Arial; }
     animation:pop .4s ease;
 }
 @keyframes pop {
-    0% { transform:scale(0.4); opacity:0;}
-    100% { transform:scale(1); opacity:1;}
+    0% { transform:scale(0.4); opacity:0; }
+    100% { transform:scale(1); opacity:1; }
 }
 .boleto-btn {
     padding:9px 17px;
@@ -91,47 +124,27 @@ body { text-align:center; color:white; font-family:Arial; }
     cursor:pointer;
     border:none;
 }
-
-/* Campo Teléfono */
-.input-phone {
-    width: 260px;
-    padding: 12px;
-    border-radius: 12px;
-    border: 2px solid #0066FF;
-    font-size: 16px;
-    margin-top: 10px;
-}
-.btn-validar {
-    margin-top: 10px;
-    padding: 10px 22px;
-    background: #001B41;
-    color:white;
-    border:none;
-    border-radius: 12px;
-    cursor:pointer;
-    font-size: 17px;
-}
-#msgTelefono {
-    margin-top:8px;
-    font-size:14px;
-}
 </style>
+</head>
 
+<body>
 
 <div id="mainBox">
     <h1>🎉 ¡Bienvenido a la Ruleta CeluCenter!</h1>
-    <p>Gira la ruleta y gana un descuento para tu compra.</p>
+    <p>Ingresa tu número y tu ticket para jugar.</p>
     <p id="sucursalText" style="color:#FFD176;font-size:18px;"></p>
 
     <!-- TELEFONO -->
-    <input id="telefono" 
-           class="input-phone" 
-           maxlength="10"
-           placeholder="Ingresa tu número (10 dígitos)">
-    <br>
-    <button class="btn-validar" id="btnValidar">📱 Validar número</button>
+    <input id="telefono" class="input-field" maxlength="10" placeholder="Teléfono (10 dígitos)">
     <div id="msgTelefono"></div>
 
+    <!-- TICKET -->
+    <input id="ticket" class="input-field" placeholder="Ticket (Ej: TCKST04001)">
+    <div id="msgTicket"></div>
+
+    <button class="btn-validar" id="btnValidar">✔ Validar datos</button>
+
+    <!-- RULETA -->
     <div class="ruleta-container" id="ruletaBox">
         <div class="indicador"></div>
         <img id="ruleta" src="https://raw.githubusercontent.com/piztian/SucursalesCelucenter/main/fotos/ruleta/ruleta%20celucenter.png">
@@ -139,7 +152,6 @@ body { text-align:center; color:white; font-family:Arial; }
 
     <button id="btnGirar" disabled>🎡 Girar Ruleta</button>
 </div>
-
 
 <!-- BOLETO -->
 <div class="overlay" id="overlay">
@@ -150,27 +162,22 @@ body { text-align:center; color:white; font-family:Arial; }
         <p><b>Premio: </b><span id="bPremio"></span></p>
         <p><b>Fecha: </b><span id="bFecha"></span></p>
         <p><b>Folio: </b><span id="bFolio"></span></p>
+        <p><b>Ticket: </b><span id="bTicket"></span></p>
 
         <p style="font-size:13px;color:#333;margin-top:10px;">
          📸 Toma captura de este boleto y muéstralo en caja.
         </p>
 
-        <a id="waBoleto" 
-           style="display:inline-block;margin-top:10px;color:#001B41;font-weight:bold;"
-           target="_blank">📲 WhatsApp CeluCenter</a>
-
         <button class="boleto-btn" onclick="cerrarBoleto()">Cerrar</button>
     </div>
 </div>
 
-
 <script>
-// ==============================================
+// =================================================
 // CONFIGURACIÓN
-// ==============================================
+// =================================================
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyRwknpNkU-ED2tiItpXaCC_OLXNALWDGswj3T_sSMh52fKQS8cDnPC45TOVF2ZEaHF/exec";
-const WHATSAPP_NUM = "5213321012446";
-
+const WHATSAPP_NUM = "3321012446";
 const premios = [
     {nombre:"20% de descuento", prob:50},
     {nombre:"15% de descuento", prob:25},
@@ -179,46 +186,74 @@ const premios = [
     {nombre:"25% de descuento", prob:5}
 ];
 
-function formatearSucursalParaBot(nombre) {
-    return "/" + nombre.replace(/\s+/g, "_");
-}
-
-
-// ==============================================
-// SUCURSAL DESDE URL
-// ==============================================
+// SUCURSAL POR URL
 const urlParams = new URLSearchParams(window.location.search);
 const sucursal = urlParams.get("sucursal") || "SIN_SUCURSAL";
+const comandoBot = "/" + sucursal.replace(/\s+/g, "_");
 document.getElementById("sucursalText").textContent = "Sucursal: " + sucursal;
 
+// =================================================
+// VARIABLES GLOBALES
+// =================================================
+let datosOK = false;
+let girando = false;
+let ultimoGiro = null;
+const TIEMPO_ESPERA = 5 * 60 * 1000; // 5 minutos
 
-// ==============================================
-// VALIDACIÓN DE TELÉFONO (LOCAL – SIN SERVIDOR)
-// ==============================================
-let telefonoOK = false;
-
+// =================================================
+// VALIDACIÓN
+// =================================================
 document.getElementById("btnValidar").onclick = () => {
-    const tel = document.getElementById("telefono").value.trim();
-    const msg = document.getElementById("msgTelefono");
 
-    if (!/^[0-9]{10}$/.test(tel)) {
-        msg.style.color = "red";
-        msg.textContent = "❗ Ingresa un número válido de 10 dígitos.";
+    if (ultimoGiro && (Date.now() - ultimoGiro < TIEMPO_ESPERA)) {
+        const faltan = Math.ceil((TIEMPO_ESPERA - (Date.now() - ultimoGiro)) / 60000);
+        alert(`Espera ${faltan} minutos antes de volver a girar.`);
         return;
     }
 
-    telefonoOK = true;
-    msg.style.color = "lightgreen";
-    msg.textContent = "✅ Número válido. Puedes girar la ruleta.";
+    const tel = document.getElementById("telefono").value.trim();
+    const ticket = document.getElementById("ticket").value.trim().toUpperCase();
+
+    const msgTel = document.getElementById("msgTelefono");
+    const msgTick = document.getElementById("msgTicket");
+
+    // Teléfono válido MX (muchos prefijos)
+    const telefonoRegex = /^[0-9]{10}$/;
+
+    if (!telefonoRegex.test(tel)) {
+        msgTel.style.color = "red";
+        msgTel.textContent = "❗ Número inválido. Debe ser un número mexicano válido.";
+        datosOK = false;
+        document.getElementById("btnGirar").disabled = true;
+        return;
+    } else {
+        msgTel.style.color = "lightgreen";
+        msgTel.textContent = "✔ Número válido.";
+    }
+
+    // Ticket: 3–5 letras + 4–8 números
+    const ticketRegex = /^[A-Z]{3,5}[0-9]{4,8}$/;
+
+    if (!ticketRegex.test(ticket)) {
+        msgTick.style.color = "red";
+        msgTick.textContent = "❗ Ticket inválido. Ejemplo: TCKST04001";
+        datosOK = false;
+        document.getElementById("btnGirar").disabled = true;
+        return;
+    } else {
+        msgTick.style.color = "lightgreen";
+        msgTick.textContent = "✔ Ticket válido.";
+    }
+
+    datosOK = true;
     document.getElementById("btnGirar").disabled = false;
 };
 
-
-// ==============================================
-// CREAR LUCES
-// ==============================================
+// =================================================
+// LUCES DECORATIVAS
+// =================================================
 const cont = document.getElementById("ruletaBox");
-for (let i=0;i<24;i++){
+for(let i=0;i<24;i++){
     const luz=document.createElement("div");
     luz.className="luz";
     const a=(360/24)*i;
@@ -230,10 +265,9 @@ for (let i=0;i<24;i++){
     cont.appendChild(luz);
 }
 
-
-// ==============================================
-// GENERADORES
-// ==============================================
+// =================================================
+// Funciones
+// =================================================
 function premioAleatorio(){
     let total=premios.reduce((s,p)=>s+p.prob,0);
     let r=Math.random()*total,acum=0;
@@ -243,54 +277,13 @@ function generarFolio(){
     return "CC-" + Math.random().toString(36).substring(2,8).toUpperCase();
 }
 
-
-// ==============================================
-// BLOQUEO 5 MINUTOS
-// ==============================================
-function tiempoRestante() {
-    const ultimo = localStorage.getItem("ultimoGiro");
-    if (!ultimo) return 0;
-
-    const diff = Date.now() - parseInt(ultimo);
-    return Math.max(0, 5*60*1000 - diff);
-}
-
-function verificarBloqueo() {
-    const btn = document.getElementById("btnGirar");
-    const restante = tiempoRestante();
-
-    if (restante > 0) {
-        btn.disabled = true;
-
-        const interval = setInterval(()=>{
-            const r = tiempoRestante();
-            if (r<=0) {
-                clearInterval(interval);
-                if (telefonoOK) btn.disabled = false;
-                btn.textContent = "🎡 Girar Ruleta";
-                return;
-            }
-            const m = Math.floor(r/60000);
-            const s = Math.floor((r%60000)/1000);
-            btn.textContent = `⏳ Espera ${m}:${s.toString().padStart(2,"0")}`;
-        },1000);
-    }
-}
-verificarBloqueo();
-
-
-// ==============================================
-// GIRO
-// ==============================================
-let girando = false;
-
+// =================================================
+// GIRAR
+// =================================================
 document.getElementById("btnGirar").onclick = () => {
 
-    if (!telefonoOK) return;
+    if (!datosOK) return;
     if (girando) return;
-
-    localStorage.setItem("ultimoGiro", Date.now());
-    verificarBloqueo();
 
     girando = true;
 
@@ -301,53 +294,73 @@ document.getElementById("btnGirar").onclick = () => {
     const giro = (360*5) - (index*grados) - (grados/2);
 
     ruleta.style.transform = `rotate(${giro}deg)`;
+    document.getElementById("btnGirar").disabled = true;
 
     setTimeout(() => {
 
         const fecha = new Date().toLocaleDateString("es-MX");
         const folio = generarFolio();
         const telefono = document.getElementById("telefono").value.trim();
-        const comandoBot = formatearSucursalParaBot(sucursal);
+        const ticket = document.getElementById("ticket").value.trim().toUpperCase();
 
-        document.getElementById("bSucursal").textContent = comandoBot;
+        document.getElementById("bSucursal").textContent = sucursal;
         document.getElementById("bPremio").textContent = premio;
         document.getElementById("bFecha").textContent = fecha;
         document.getElementById("bFolio").textContent = folio;
-
-        const mensajeWA = encodeURIComponent(
-            comandoBot + " - Hola, gané un premio en la ruleta CeluCenter.\n" +
-            "Premio: " + premio + "\n" +
-            "Folio: " + folio
-        );
-        document.getElementById("waBoleto").href =
-            "https://wa.me/" + WHATSAPP_NUM + "?text=" + mensajeWA;
+        document.getElementById("bTicket").textContent = ticket;
 
         document.getElementById("overlay").style.display = "flex";
 
-
-        // Registrar el giro final (solo premio)
+        // GUARDAR EN SHEETS
         fetch(SCRIPT_URL, {
-            method:"POST",
-            mode:"no-cors",
-            headers:{"Content-Type":"application/json"},
-            body:JSON.stringify({
+            method: "POST",
+            mode: "no-cors",
+            headers: {"Content-Type":"application/json"},
+            body: JSON.stringify({
                 sucursal,
-                telefono,
-                premio,
-                fecha,
-                folio,
                 comandoBot,
+                telefono,
+                ticket,
+                premio,
+                fecha_cliente: fecha,
+                folio,
                 userAgent: navigator.userAgent
             })
         });
 
-        girando = false;
+        ultimoGiro = Date.now();
 
+        // 📲 BOTÓN WHATSAPP PERFECTO
+        const btnWhatsapp = document.createElement('button');
+        btnWhatsapp.textContent = '📲 Enviar por WhatsApp';
+        btnWhatsapp.classList.add('boleto-btn');
+
+        btnWhatsapp.onclick = () => {
+            const mensaje = 
+`${comandoBot}
+Hola, gané un premio en la ruleta CeluCenter 🎉
+
+🏪 Sucursal: ${sucursal}
+🎁 Premio: ${premio}
+🎫 Folio: ${folio}
+🧾 Ticket: ${ticket}
+
+Gracias.`;
+
+            const url = `https://wa.me/52${WHATSAPP_NUM}?text=${encodeURIComponent(mensaje)}`;
+            window.open(url, "_blank");
+        };
+
+        document.querySelector('.card-premio').appendChild(btnWhatsapp);
+
+        girando = false;
     }, 5000);
 };
-
 
 function cerrarBoleto() {
     document.getElementById("overlay").style.display = "none";
 }
 </script>
+
+</body>
+</html>
