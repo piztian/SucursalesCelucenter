@@ -8,7 +8,7 @@
 <style>
 body { text-align:center; color:white; font-family:Arial; background:#000; }
 
-/* RUETA */
+/* RULETA */
 .ruleta-container {
     width: 360px;
     height: 360px;
@@ -85,7 +85,7 @@ body { text-align:center; color:white; font-family:Arial; background:#000; }
     cursor:pointer;
     font-size: 17px;
 }
-#msgTelefono, #msgTicket {
+#msgTelefono, #msgTicket, #msgEspera {
     margin-top:8px;
     font-size:14px;
 }
@@ -123,6 +123,39 @@ body { text-align:center; color:white; font-family:Arial; background:#000; }
     margin-top:10px;
     cursor:pointer;
     border:none;
+    width:100%;
+}
+
+/* Overlay de carga */
+.overlay-carga {
+    display:none;
+    position:fixed;
+    left:0; top:0;
+    width:100%; height:100%;
+    background:#000d;
+    justify-content:center;
+    align-items:center;
+    z-index:9998;
+}
+.card-carga {
+    background:white;
+    color:#001B41;
+    padding:30px;
+    border-radius:16px;
+    text-align:center;
+}
+.spinner {
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #0066FF;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 15px;
+}
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
 </style>
 </head>
@@ -141,6 +174,9 @@ body { text-align:center; color:white; font-family:Arial; background:#000; }
     <!-- TICKET -->
     <input id="ticket" class="input-field" placeholder="Ticket (Ej: TCKST04001)">
     <div id="msgTicket"></div>
+
+    <!-- MENSAJE DE ESPERA -->
+    <div id="msgEspera" style="color:#FFD176;"></div>
 
     <button class="btn-validar" id="btnValidar">✔ Validar datos</button>
 
@@ -168,7 +204,16 @@ body { text-align:center; color:white; font-family:Arial; background:#000; }
          📸 Toma captura de este boleto y muéstralo en caja.
         </p>
 
+        <button class="boleto-btn" id="btnWhatsapp">📲 Enviar por WhatsApp</button>
         <button class="boleto-btn" onclick="cerrarBoleto()">Cerrar</button>
+    </div>
+</div>
+
+<!-- OVERLAY DE CARGA -->
+<div class="overlay-carga" id="overlayCarga">
+    <div class="card-carga">
+        <div class="spinner"></div>
+        <p>Procesando tu premio...</p>
     </div>
 </div>
 
@@ -197,17 +242,56 @@ document.getElementById("sucursalText").textContent = "Sucursal: " + sucursal;
 // =================================================
 let datosOK = false;
 let girando = false;
-let ultimoGiro = null;
-const TIEMPO_ESPERA = 5 * 60 * 1000; // 5 minutos
+let proximoGiroEn = 0; // timestamp para próximo giro permitido
+
+// Cargar timestamp del localStorage
+function cargarProximoGiro() {
+    const guardado = localStorage.getItem(`celucenter_${sucursal}_proximoGiro`);
+    if (guardado) {
+        proximoGiroEn = parseInt(guardado);
+    }
+}
+
+function guardarProximoGiro(timestamp) {
+    localStorage.setItem(`celucenter_${sucursal}_proximoGiro`, timestamp.toString());
+    proximoGiroEn = timestamp;
+}
+
+// Cargar al iniciar
+cargarProximoGiro();
+
+// =================================================
+// ACTUALIZAR CONTADOR DE ESPERA CADA SEGUNDO
+// =================================================
+setInterval(() => {
+    const ahora = Date.now();
+    if (proximoGiroEn > ahora) {
+        const segundosFaltan = Math.ceil((proximoGiroEn - ahora) / 1000);
+        const minutos = Math.floor(segundosFaltan / 60);
+        const segundos = segundosFaltan % 60;
+        
+        document.getElementById("msgEspera").textContent = 
+            `⏳ Debes esperar: ${minutos}m ${segundos}s`;
+        document.getElementById("btnValidar").disabled = true;
+        document.getElementById("btnGirar").disabled = true;
+    } else {
+        document.getElementById("msgEspera").textContent = "";
+        document.getElementById("btnValidar").disabled = false;
+        if (datosOK) {
+            document.getElementById("btnGirar").disabled = false;
+        }
+    }
+}, 1000);
 
 // =================================================
 // VALIDACIÓN
 // =================================================
 document.getElementById("btnValidar").onclick = () => {
 
-    if (ultimoGiro && (Date.now() - ultimoGiro < TIEMPO_ESPERA)) {
-        const faltan = Math.ceil((TIEMPO_ESPERA - (Date.now() - ultimoGiro)) / 60000);
-        alert(`Espera ${faltan} minutos antes de volver a girar.`);
+    const ahora = Date.now();
+    if (proximoGiroEn > ahora) {
+        const segundosFaltan = Math.ceil((proximoGiroEn - ahora) / 1000);
+        alert(`Debes esperar ${segundosFaltan} segundos más.`);
         return;
     }
 
@@ -217,7 +301,7 @@ document.getElementById("btnValidar").onclick = () => {
     const msgTel = document.getElementById("msgTelefono");
     const msgTick = document.getElementById("msgTicket");
 
-    // Teléfono válido MX (muchos prefijos)
+    // Teléfono válido MX (10 dígitos)
     const telefonoRegex = /^[0-9]{10}$/;
 
     if (!telefonoRegex.test(tel)) {
@@ -278,14 +362,25 @@ function generarFolio(){
 }
 
 // =================================================
-// GIRAR
+// GIRAR RULETA
 // =================================================
 document.getElementById("btnGirar").onclick = () => {
 
     if (!datosOK) return;
     if (girando) return;
 
+    const ahora = Date.now();
+    if (proximoGiroEn > ahora) {
+        alert("Debes esperar antes de girar nuevamente.");
+        return;
+    }
+
     girando = true;
+    document.getElementById("btnGirar").disabled = true;
+    document.getElementById("btnValidar").disabled = true;
+
+    // Mostrar carga
+    document.getElementById("overlayCarga").style.display = "flex";
 
     const ruleta = document.getElementById("ruleta");
     const premio = premioAleatorio();
@@ -294,7 +389,6 @@ document.getElementById("btnGirar").onclick = () => {
     const giro = (360*5) - (index*grados) - (grados/2);
 
     ruleta.style.transform = `rotate(${giro}deg)`;
-    document.getElementById("btnGirar").disabled = true;
 
     setTimeout(() => {
 
@@ -303,18 +397,9 @@ document.getElementById("btnGirar").onclick = () => {
         const telefono = document.getElementById("telefono").value.trim();
         const ticket = document.getElementById("ticket").value.trim().toUpperCase();
 
-        document.getElementById("bSucursal").textContent = sucursal;
-        document.getElementById("bPremio").textContent = premio;
-        document.getElementById("bFecha").textContent = fecha;
-        document.getElementById("bFolio").textContent = folio;
-        document.getElementById("bTicket").textContent = ticket;
-
-        document.getElementById("overlay").style.display = "flex";
-
-        // GUARDAR EN SHEETS
+        // ENVIAR AL SERVIDOR
         fetch(SCRIPT_URL, {
             method: "POST",
-            mode: "no-cors",
             headers: {"Content-Type":"application/json"},
             body: JSON.stringify({
                 sucursal,
@@ -326,20 +411,58 @@ document.getElementById("btnGirar").onclick = () => {
                 folio,
                 userAgent: navigator.userAgent
             })
-        });
+        })
+        .then(response => response.json())
+        .then(respuesta => {
 
-        ultimoGiro = Date.now();
+            document.getElementById("overlayCarga").style.display = "none";
 
-        // 📲 BOTÓN WHATSAPP PERFECTO
-        const btnWhatsapp = document.createElement('button');
-        btnWhatsapp.textContent = '📲 Enviar por WhatsApp';
-        btnWhatsapp.classList.add('boleto-btn');
+            // ❌ VALIDACIONES DEL SERVIDOR
+            if (respuesta.status === "error") {
+                alert("❌ Error: " + respuesta.message);
+                girando = false;
+                document.getElementById("btnGirar").disabled = false;
+                document.getElementById("btnValidar").disabled = false;
+                return;
+            }
 
-        btnWhatsapp.onclick = () => {
-            const mensaje = 
-`${comandoBot}
-Hola, gané un premio en la ruleta CeluCenter 🎉
+            if (respuesta.status === "duplicate_ticket") {
+                alert("❌ Este ticket ya fue usado. Intenta con otro ticket.");
+                girando = false;
+                document.getElementById("btnGirar").disabled = false;
+                document.getElementById("btnValidar").disabled = false;
+                return;
+            }
 
+            if (respuesta.status === "blocked") {
+                const horasPasadas = respuesta.hoursPassed;
+                const horasRestantes = Math.ceil(24 - horasPasadas);
+                alert(`⏳ Solo puedes jugar una vez cada 24 horas.\nIntenta en ${horasRestantes} hora(s).`);
+                girando = false;
+                document.getElementById("btnGirar").disabled = false;
+                document.getElementById("btnValidar").disabled = false;
+                return;
+            }
+
+            if (respuesta.status === "ok") {
+                // ✅ ÉXITO: Mostrar boleto y bloquear por 24 horas
+                document.getElementById("bSucursal").textContent = sucursal;
+                document.getElementById("bPremio").textContent = premio;
+                document.getElementById("bFecha").textContent = fecha;
+                document.getElementById("bFolio").textContent = folio;
+                document.getElementById("bTicket").textContent = ticket;
+
+                document.getElementById("overlay").style.display = "flex";
+
+                // Guardar timestamp para 24 horas después
+                const proximoGiro = Date.now() + (24 * 60 * 60 * 1000);
+                guardarProximoGiro(proximoGiro);
+
+                // Botón WhatsApp
+                const btnWhatsapp = document.getElementById("btnWhatsapp");
+                btnWhatsapp.onclick = () => {
+                    const mensaje = 
+`${comandoBot} Hola, gané un premio en la ruleta CeluCenter 🎉
 🏪 Sucursal: ${sucursal}
 🎁 Premio: ${premio}
 🎫 Folio: ${folio}
@@ -347,18 +470,35 @@ Hola, gané un premio en la ruleta CeluCenter 🎉
 
 Gracias.`;
 
-            const url = `https://wa.me/52${WHATSAPP_NUM}?text=${encodeURIComponent(mensaje)}`;
-            window.open(url, "_blank");
-        };
+                    const url = `https://wa.me/52${WHATSAPP_NUM}?text=${encodeURIComponent(mensaje)}`;
+                    window.open(url, "_blank");
+                };
 
-        document.querySelector('.card-premio').appendChild(btnWhatsapp);
+                girando = false;
+            }
 
-        girando = false;
+        })
+        .catch(error => {
+            document.getElementById("overlayCarga").style.display = "none";
+            console.error("Error:", error);
+            alert("❌ Error de conexión. Intenta nuevamente.");
+            girando = false;
+            document.getElementById("btnGirar").disabled = false;
+            document.getElementById("btnValidar").disabled = false;
+        });
+
     }, 5000);
 };
 
 function cerrarBoleto() {
     document.getElementById("overlay").style.display = "none";
+    // Limpiar inputs
+    document.getElementById("telefono").value = "";
+    document.getElementById("ticket").value = "";
+    document.getElementById("msgTelefono").textContent = "";
+    document.getElementById("msgTicket").textContent = "";
+    datosOK = false;
+    document.getElementById("btnGirar").disabled = true;
 }
 </script>
 
