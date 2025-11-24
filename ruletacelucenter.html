@@ -54,6 +54,10 @@ body { text-align:center; color:white; font-family:Arial; }
     color: white;
     cursor: pointer;
 }
+#btnGirar:disabled {
+    background: #444;
+    cursor: not-allowed;
+}
 .overlay {
     display:none;
     position:fixed;
@@ -87,6 +91,30 @@ body { text-align:center; color:white; font-family:Arial; }
     cursor:pointer;
     border:none;
 }
+
+/* Campo Teléfono */
+.input-phone {
+    width: 260px;
+    padding: 12px;
+    border-radius: 12px;
+    border: 2px solid #0066FF;
+    font-size: 16px;
+    margin-top: 10px;
+}
+.btn-validar {
+    margin-top: 10px;
+    padding: 10px 22px;
+    background: #001B41;
+    color:white;
+    border:none;
+    border-radius: 12px;
+    cursor:pointer;
+    font-size: 17px;
+}
+#msgTelefono {
+    margin-top:8px;
+    font-size:14px;
+}
 </style>
 
 
@@ -95,12 +123,21 @@ body { text-align:center; color:white; font-family:Arial; }
     <p>Gira la ruleta y gana un descuento para tu compra.</p>
     <p id="sucursalText" style="color:#FFD176;font-size:18px;"></p>
 
+    <!-- TELEFONO -->
+    <input id="telefono" 
+           class="input-phone" 
+           maxlength="10"
+           placeholder="Ingresa tu número (10 dígitos)">
+    <br>
+    <button class="btn-validar" id="btnValidar">📱 Validar número</button>
+    <div id="msgTelefono"></div>
+
     <div class="ruleta-container" id="ruletaBox">
         <div class="indicador"></div>
         <img id="ruleta" src="https://raw.githubusercontent.com/piztian/SucursalesCelucenter/main/fotos/ruleta/ruleta%20celucenter.png">
     </div>
 
-    <button id="btnGirar">🎡 Girar Ruleta</button>
+    <button id="btnGirar" disabled>🎡 Girar Ruleta</button>
 </div>
 
 
@@ -142,10 +179,10 @@ const premios = [
     {nombre:"25% de descuento", prob:5}
 ];
 
-// Formato /Sucursal para bot
 function formatearSucursalParaBot(nombre) {
     return "/" + nombre.replace(/\s+/g, "_");
 }
+
 
 // ==============================================
 // SUCURSAL DESDE URL
@@ -153,6 +190,28 @@ function formatearSucursalParaBot(nombre) {
 const urlParams = new URLSearchParams(window.location.search);
 const sucursal = urlParams.get("sucursal") || "SIN_SUCURSAL";
 document.getElementById("sucursalText").textContent = "Sucursal: " + sucursal;
+
+
+// ==============================================
+// VALIDACIÓN DE TELÉFONO (LOCAL – SIN SERVIDOR)
+// ==============================================
+let telefonoOK = false;
+
+document.getElementById("btnValidar").onclick = () => {
+    const tel = document.getElementById("telefono").value.trim();
+    const msg = document.getElementById("msgTelefono");
+
+    if (!/^[0-9]{10}$/.test(tel)) {
+        msg.style.color = "red";
+        msg.textContent = "❗ Ingresa un número válido de 10 dígitos.";
+        return;
+    }
+
+    telefonoOK = true;
+    msg.style.color = "lightgreen";
+    msg.textContent = "✅ Número válido. Puedes girar la ruleta.";
+    document.getElementById("btnGirar").disabled = false;
+};
 
 
 // ==============================================
@@ -193,38 +252,30 @@ function tiempoRestante() {
     if (!ultimo) return 0;
 
     const diff = Date.now() - parseInt(ultimo);
-    const cincoMin = 5 * 60 * 1000;
-
-    return Math.max(0, cincoMin - diff);
-}
-
-function mostrarCuentaRegresiva(ms) {
-    const btn = document.getElementById("btnGirar");
-    btn.disabled = true;
-
-    const interval = setInterval(() => {
-        const restante = tiempoRestante();
-        if (restante <= 0) {
-            clearInterval(interval);
-            btn.disabled = false;
-            btn.textContent = "🎡 Girar Ruleta";
-            return;
-        }
-
-        const m = Math.floor(restante / 60000);
-        const s = Math.floor((restante % 60000) / 1000);
-
-        btn.textContent = `⏳ Espera ${m}:${s.toString().padStart(2, '0')}`;
-    }, 1000);
+    return Math.max(0, 5*60*1000 - diff);
 }
 
 function verificarBloqueo() {
+    const btn = document.getElementById("btnGirar");
     const restante = tiempoRestante();
+
     if (restante > 0) {
-        mostrarCuentaRegresiva(restante);
+        btn.disabled = true;
+
+        const interval = setInterval(()=>{
+            const r = tiempoRestante();
+            if (r<=0) {
+                clearInterval(interval);
+                if (telefonoOK) btn.disabled = false;
+                btn.textContent = "🎡 Girar Ruleta";
+                return;
+            }
+            const m = Math.floor(r/60000);
+            const s = Math.floor((r%60000)/1000);
+            btn.textContent = `⏳ Espera ${m}:${s.toString().padStart(2,"0")}`;
+        },1000);
     }
 }
-
 verificarBloqueo();
 
 
@@ -235,12 +286,12 @@ let girando = false;
 
 document.getElementById("btnGirar").onclick = () => {
 
-    const restante = tiempoRestante();
-    if (restante > 0) return;
+    if (!telefonoOK) return;
+    if (girando) return;
 
     localStorage.setItem("ultimoGiro", Date.now());
+    verificarBloqueo();
 
-    if (girando) return;
     girando = true;
 
     const ruleta = document.getElementById("ruleta");
@@ -255,6 +306,7 @@ document.getElementById("btnGirar").onclick = () => {
 
         const fecha = new Date().toLocaleDateString("es-MX");
         const folio = generarFolio();
+        const telefono = document.getElementById("telefono").value.trim();
         const comandoBot = formatearSucursalParaBot(sucursal);
 
         document.getElementById("bSucursal").textContent = comandoBot;
@@ -262,26 +314,31 @@ document.getElementById("btnGirar").onclick = () => {
         document.getElementById("bFecha").textContent = fecha;
         document.getElementById("bFolio").textContent = folio;
 
-
         const mensajeWA = encodeURIComponent(
             comandoBot + " - Hola, gané un premio en la ruleta CeluCenter.\n" +
             "Premio: " + premio + "\n" +
             "Folio: " + folio
         );
-
         document.getElementById("waBoleto").href =
             "https://wa.me/" + WHATSAPP_NUM + "?text=" + mensajeWA;
 
         document.getElementById("overlay").style.display = "flex";
 
-        enviarRegistro({
-            sucursal,
-            comandoBot,
-            premio,
-            fecha,
-            folio,
-            timestamp: new Date().toISOString(),
-            userAgent: navigator.userAgent
+
+        // Registrar el giro final (solo premio)
+        fetch(SCRIPT_URL, {
+            method:"POST",
+            mode:"no-cors",
+            headers:{"Content-Type":"application/json"},
+            body:JSON.stringify({
+                sucursal,
+                telefono,
+                premio,
+                fecha,
+                folio,
+                comandoBot,
+                userAgent: navigator.userAgent
+            })
         });
 
         girando = false;
@@ -292,14 +349,5 @@ document.getElementById("btnGirar").onclick = () => {
 
 function cerrarBoleto() {
     document.getElementById("overlay").style.display = "none";
-}
-
-function enviarRegistro(data){
-    fetch(SCRIPT_URL,{
-        method:"POST",
-        mode:"no-cors",
-        headers:{"Content-Type":"application/json"},
-        body:JSON.stringify(data)
-    });
 }
 </script>
