@@ -1,6 +1,6 @@
-<!-- ================================
-     RUETA CELUCENTER - DEFINITIVO
-     ================================ -->
+<!-- ============================================
+     RULETA CELUCENTER - CÓDIGO FINAL COMPLETO
+     ============================================ -->
 
 <style>
 body { text-align:center; color:white; font-family:Arial; }
@@ -89,6 +89,7 @@ body { text-align:center; color:white; font-family:Arial; }
 }
 </style>
 
+
 <div id="mainBox">
     <h1>🎉 ¡Bienvenido a la Ruleta CeluCenter!</h1>
     <p>Gira la ruleta y gana un descuento para tu compra.</p>
@@ -102,10 +103,12 @@ body { text-align:center; color:white; font-family:Arial; }
     <button id="btnGirar">🎡 Girar Ruleta</button>
 </div>
 
+
 <!-- BOLETO -->
 <div class="overlay" id="overlay">
     <div class="card-premio">
         <h2>🎟 Boleto de Descuento</h2>
+
         <p><b>Sucursal: </b><span id="bSucursal"></span></p>
         <p><b>Premio: </b><span id="bPremio"></span></p>
         <p><b>Fecha: </b><span id="bFecha"></span></p>
@@ -123,6 +126,7 @@ body { text-align:center; color:white; font-family:Arial; }
     </div>
 </div>
 
+
 <script>
 // ==============================================
 // CONFIGURACIÓN
@@ -138,17 +142,18 @@ const premios = [
     {nombre:"25% de descuento", prob:5}
 ];
 
-// Generador del comando del bot
+// Formato /Sucursal para bot
 function formatearSucursalParaBot(nombre) {
     return "/" + nombre.replace(/\s+/g, "_");
 }
 
 // ==============================================
-// OBTENER SUCURSAL DESDE URL
+// SUCURSAL DESDE URL
 // ==============================================
 const urlParams = new URLSearchParams(window.location.search);
 const sucursal = urlParams.get("sucursal") || "SIN_SUCURSAL";
 document.getElementById("sucursalText").textContent = "Sucursal: " + sucursal;
+
 
 // ==============================================
 // CREAR LUCES
@@ -166,8 +171,9 @@ for (let i=0;i<24;i++){
     cont.appendChild(luz);
 }
 
+
 // ==============================================
-// FUNCIONES
+// GENERADORES
 // ==============================================
 function premioAleatorio(){
     let total=premios.reduce((s,p)=>s+p.prob,0);
@@ -178,11 +184,62 @@ function generarFolio(){
     return "CC-" + Math.random().toString(36).substring(2,8).toUpperCase();
 }
 
+
+// ==============================================
+// BLOQUEO 5 MINUTOS
+// ==============================================
+function tiempoRestante() {
+    const ultimo = localStorage.getItem("ultimoGiro");
+    if (!ultimo) return 0;
+
+    const diff = Date.now() - parseInt(ultimo);
+    const cincoMin = 5 * 60 * 1000;
+
+    return Math.max(0, cincoMin - diff);
+}
+
+function mostrarCuentaRegresiva(ms) {
+    const btn = document.getElementById("btnGirar");
+    btn.disabled = true;
+
+    const interval = setInterval(() => {
+        const restante = tiempoRestante();
+        if (restante <= 0) {
+            clearInterval(interval);
+            btn.disabled = false;
+            btn.textContent = "🎡 Girar Ruleta";
+            return;
+        }
+
+        const m = Math.floor(restante / 60000);
+        const s = Math.floor((restante % 60000) / 1000);
+
+        btn.textContent = `⏳ Espera ${m}:${s.toString().padStart(2, '0')}`;
+    }, 1000);
+}
+
+function verificarBloqueo() {
+    const restante = tiempoRestante();
+    if (restante > 0) {
+        mostrarCuentaRegresiva(restante);
+    }
+}
+
+verificarBloqueo();
+
+
 // ==============================================
 // GIRO
 // ==============================================
 let girando = false;
+
 document.getElementById("btnGirar").onclick = () => {
+
+    const restante = tiempoRestante();
+    if (restante > 0) return;
+
+    localStorage.setItem("ultimoGiro", Date.now());
+
     if (girando) return;
     girando = true;
 
@@ -195,9 +252,9 @@ document.getElementById("btnGirar").onclick = () => {
     ruleta.style.transform = `rotate(${giro}deg)`;
 
     setTimeout(() => {
+
         const fecha = new Date().toLocaleDateString("es-MX");
         const folio = generarFolio();
-
         const comandoBot = formatearSucursalParaBot(sucursal);
 
         document.getElementById("bSucursal").textContent = comandoBot;
@@ -205,9 +262,9 @@ document.getElementById("btnGirar").onclick = () => {
         document.getElementById("bFecha").textContent = fecha;
         document.getElementById("bFolio").textContent = folio;
 
+
         const mensajeWA = encodeURIComponent(
-            "Hola, gané un premio en la ruleta CeluCenter.\n" +
-            "Sucursal: " + comandoBot + "\n" +
+            comandoBot + " - Hola, gané un premio en la ruleta CeluCenter.\n" +
             "Premio: " + premio + "\n" +
             "Folio: " + folio
         );
@@ -228,8 +285,10 @@ document.getElementById("btnGirar").onclick = () => {
         });
 
         girando = false;
+
     }, 5000);
 };
+
 
 function cerrarBoleto() {
     document.getElementById("overlay").style.display = "none";
