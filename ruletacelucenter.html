@@ -6,26 +6,26 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-body { text-align:center; color:white; font-family:Arial; background:#000; }
+body { text-align:center; color:white; font-family:Arial; background:linear-gradient(135deg, #0a1929 0%, #1a237e 100%); }
 
 /* RULETA */
 .ruleta-container {
     width: 360px;
     height: 360px;
     border-radius: 50%;
-    border: 10px solid #001B41;
+    border: 10px solid #00BFA5;
     margin: 20px auto;
     position: relative;
     overflow: hidden;
-    background: #001B41;
-    box-shadow: 0 0 25px #000a;
+    background: linear-gradient(135deg, #004D40 0%, #00695C 100%);
+    box-shadow: 0 0 30px #00BFA5, 0 0 60px rgba(0, 191, 165, 0.3);
 }
 .indicador {
     width: 0;
     height: 0;
     border-left: 18px solid transparent;
     border-right: 18px solid transparent;
-    border-bottom: 28px solid #FFD176;
+    border-bottom: 28px solid #FF9800;
     position: absolute;
     top: -5px;
     left: calc(50% - 18px);
@@ -41,7 +41,7 @@ body { text-align:center; color:white; font-family:Arial; background:#000; }
     width: 14px;
     height: 14px;
     border-radius: 50%;
-    background: #FFD176;
+    background: #FF9800;
     position: absolute;
     animation: luz 1.2s infinite alternate;
 }
@@ -53,16 +53,19 @@ body { text-align:center; color:white; font-family:Arial; background:#000; }
 #btnGirar {
     margin-top: 10px;
     padding: 12px 26px;
-    background: #0066FF;
+    background: linear-gradient(135deg, #00BFA5 0%, #1DE9B6 100%);
     border: none;
     border-radius: 12px;
     font-size: 18px;
     color: white;
     cursor: pointer;
+    font-weight: bold;
+    box-shadow: 0 4px 15px rgba(0, 191, 165, 0.4);
 }
 #btnGirar:disabled {
-    background: #444;
+    background: #555;
     cursor: not-allowed;
+    box-shadow: none;
 }
 
 /* Inputs */
@@ -70,20 +73,27 @@ body { text-align:center; color:white; font-family:Arial; background:#000; }
     width: 260px;
     padding: 12px;
     border-radius: 12px;
-    border: 2px solid #0066FF;
+    border: 2px solid #FF9800;
     font-size: 16px;
     margin-top: 10px;
     text-transform: uppercase;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+.input-field::placeholder {
+    color: rgba(255, 255, 255, 0.6);
 }
 .btn-validar {
     margin-top: 10px;
     padding: 10px 22px;
-    background: #001B41;
+    background: linear-gradient(135deg, #FF9800 0%, #FFB74D 100%);
     color:white;
     border:none;
     border-radius: 12px;
     cursor:pointer;
     font-size: 17px;
+    font-weight: bold;
+    box-shadow: 0 4px 15px rgba(255, 152, 0, 0.4);
 }
 #msgTelefono, #msgTicket, #msgEspera {
     margin-top:8px;
@@ -105,11 +115,11 @@ body { text-align:center; color:white; font-family:Arial; background:#000; }
 .card-premio {
     width:320px;
     background:white;
-    color:#001B41;
+    color:#004D40;
     padding:20px;
     border-radius:16px;
-    border:2px dashed #FFD176;
-    box-shadow:0 0 20px #ffd17680;
+    border:3px solid #FF9800;
+    box-shadow:0 0 30px rgba(255, 152, 0, 0.4), 0 0 60px rgba(0, 191, 165, 0.2);
     animation:pop .4s ease;
     margin:20px auto;
 }
@@ -119,13 +129,14 @@ body { text-align:center; color:white; font-family:Arial; background:#000; }
 }
 .boleto-btn {
     padding:9px 17px;
-    background:#001B41;
+    background: linear-gradient(135deg, #004D40 0%, #00695C 100%);
     color:white;
     border-radius:10px;
     margin-top:10px;
     cursor:pointer;
     border:none;
     width:100%;
+    font-weight: bold;
 }
 
 /* Overlay de carga */
@@ -167,7 +178,7 @@ body { text-align:center; color:white; font-family:Arial; background:#000; }
 <div id="mainBox">
     <h1>🎉 ¡Bienvenido a la Ruleta CeluCenter!</h1>
     <p>Ingresa tu número y tu ticket para jugar.</p>
-    <p id="sucursalText" style="color:#FFD176;font-size:18px;"></p>
+    <p id="sucursalText" style="color:#FF9800;font-size:18px;font-weight:bold;"></p>
 
     <!-- TELEFONO -->
     <input id="telefono" class="input-field" maxlength="10" placeholder="Teléfono (10 dígitos)">
@@ -178,7 +189,7 @@ body { text-align:center; color:white; font-family:Arial; background:#000; }
     <div id="msgTicket"></div>
 
     <!-- MENSAJE DE ESPERA -->
-    <div id="msgEspera" style="color:#FFD176;"></div>
+    <div id="msgEspera" style="color:#FF9800;"></div>
 
     <button class="btn-validar" id="btnValidar">✔ Validar datos</button>
 
@@ -226,11 +237,13 @@ body { text-align:center; color:white; font-family:Arial; background:#000; }
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbytwTjOPxwc-uVvUjNVVPz0indYY8uXWEqcQBVJvTzYQT0NX1fBFkSMTjI8U7_EvcVe/exec";
 const WHATSAPP_NUM = "3321012446";
 const premios = [
-    {nombre:"20% de descuento", prob:50},
-    {nombre:"15% de descuento", prob:25},
-    {nombre:"10% de descuento", prob:15},
-    {nombre:"5% de descuento",  prob:5},
-    {nombre:"25% de descuento", prob:5}
+    {nombre:"5% de descuento en equipos sugeridos", prob:14},
+    {nombre:"10% de descuento en equipos sugeridos", prob:14},
+    {nombre:"15% de descuento en Equipos de sugeridos", prob:5},
+    {nombre:"20% de descuento en consolas gamer y juegos", prob:15},
+    {nombre:"25% de descuentos en fundas, accesorios y gadgets", prob:20},
+    {nombre:"30% de descuento en cables y cargadores", prob:19},
+    {nombre:"35% de descuento en fundas de mickey mouse", prob:13}
 ];
 
 console.log("✓ Script cargado. URL:", SCRIPT_URL);
@@ -287,8 +300,9 @@ document.getElementById("btnValidar").onclick = () => {
 };
 
 // =================================================
-// LUCES DECORATIVAS
+// LUCES DECORATIVAS (DESHABILITADAS)
 // =================================================
+/*
 const cont = document.getElementById("ruletaBox");
 for(let i=0;i<24;i++){
     const luz=document.createElement("div");
@@ -301,6 +315,7 @@ for(let i=0;i<24;i++){
     luz.style.animationDelay=(i*.05)+"s";
     cont.appendChild(luz);
 }
+*/
 
 // =================================================
 // Funciones
@@ -323,7 +338,6 @@ document.getElementById("btnGirar").onclick = () => {
     girando = true;
     document.getElementById("btnGirar").disabled = true;
     document.getElementById("btnValidar").disabled = true;
-    document.getElementById("overlayCarga").style.display = "flex";
 
     const ruleta = document.getElementById("ruleta");
     const premio = premioAleatorio();
@@ -334,6 +348,8 @@ document.getElementById("btnGirar").onclick = () => {
     ruleta.style.transform = `rotate(${giro}deg)`;
 
     setTimeout(() => {
+        // Mostrar carga DESPUÉS de girar
+        document.getElementById("overlayCarga").style.display = "flex";
         const fecha = new Date().toLocaleDateString("es-MX");
         const folio = generarFolio();
         const telefono = document.getElementById("telefono").value.trim();
