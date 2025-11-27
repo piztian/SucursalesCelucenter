@@ -68,6 +68,28 @@ body { text-align:center; color:white; font-family:Arial; background:linear-grad
     box-shadow: none;
 }
 
+#btnRefrescar {
+    margin-top: 20px;
+    padding: 12px 26px;
+    background: linear-gradient(135deg, #00BFA5 0%, #1DE9B6 100%);
+    border: none;
+    border-radius: 12px;
+    font-size: 18px;
+    color: white;
+    cursor: pointer;
+    font-weight: bold;
+    box-shadow: 0 4px 15px rgba(0, 191, 165, 0.4);
+    transition: transform 0.2s;
+}
+
+#btnRefrescar:hover {
+    transform: scale(1.05);
+}
+
+#btnRefrescar:active {
+    transform: scale(0.95);
+}
+
 /* Inputs */
 .input-field {
     width: 260px;
@@ -200,6 +222,7 @@ body { text-align:center; color:white; font-family:Arial; background:linear-grad
     </div>
 
     <button id="btnGirar" disabled>🎡 Girar Ruleta</button>
+    <button id="btnRefrescar" style="display:none; margin-top:20px; padding:12px 26px; background:linear-gradient(135deg, #00BFA5 0%, #1DE9B6 100%); border:none; border-radius:12px; font-size:18px; color:white; cursor:pointer; font-weight:bold; box-shadow:0 4px 15px rgba(0, 191, 165, 0.4);" onclick="location.reload()">🔄 Refrescar para otro boleto</button>
 </div>
 
 <!-- BOLETO -->
@@ -239,10 +262,10 @@ const WHATSAPP_NUM = "3321012446";
 const premios = [
     {nombre:"5% de descuento en equipos sugeridos", prob:14},
     {nombre:"10% de descuento en equipos sugeridos", prob:14},
-    {nombre:"15% de descuento en Equipos de sugeridos", prob:5},
+    {nombre:"15% de descuento en Equipos sugeridos", prob:15},
     {nombre:"20% de descuento en consolas gamer y juegos", prob:15},
-    {nombre:"25% de descuentos en fundas, accesorios y gadgets", prob:20},
-    {nombre:"30% de descuento en cables y cargadores", prob:19},
+    {nombre:"25% de descuentos en fundas, accesorios y gadgets", prob:15},
+    {nombre:"30% de descuento en cables y cargadores", prob:14},
     {nombre:"35% de descuento en fundas de mickey mouse", prob:13}
 ];
 
@@ -456,12 +479,14 @@ Gracias.`;
 
 function cerrarBoleto() {
     document.getElementById("overlay").style.display = "none";
-    document.getElementById("telefono").value = "";
-    document.getElementById("ticket").value = "";
-    document.getElementById("msgTelefono").textContent = "";
-    document.getElementById("msgTicket").textContent = "";
-    datosOK = false;
+    // Desactivar todo
+    document.getElementById("telefono").disabled = true;
+    document.getElementById("ticket").disabled = true;
+    document.getElementById("btnValidar").disabled = true;
     document.getElementById("btnGirar").disabled = true;
+    
+    // Mostrar botón de refrescar
+    document.getElementById("btnRefrescar").style.display = "block";
 }
 </script>
 
