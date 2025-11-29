@@ -128,7 +128,7 @@
 
         .main-area {
             display: grid;
-            grid-template-columns: 1fr 2fr 1fr;
+            grid-template-columns: 1fr 1fr;
             gap: 20px;
             margin-bottom: 30px;
         }
@@ -198,10 +198,18 @@
         }
 
         .descripcion-producto {
-            font-size: 0.95em;
+            font-size: 0.85em;
             color: #ccc;
             margin-top: 10px;
-            line-height: 1.4;
+            line-height: 1.5;
+            white-space: pre-line;
+            font-family: 'Courier New', monospace;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 3px solid #FDB833;
+            max-height: 400px;
+            overflow-y: auto;
         }
 
         .timer-section {
@@ -255,69 +263,6 @@
             color: #FFD700;
             margin-top: 15px;
             text-align: center;
-        }
-
-        .scoring-section {
-            background: rgba(255, 255, 255, 0.05);
-            border: 3px solid #4CAF50;
-            border-radius: 15px;
-            padding: 30px;
-        }
-
-        .scoring-section h3 {
-            color: #4CAF50;
-            margin-bottom: 20px;
-            text-transform: uppercase;
-            font-size: 1.2em;
-        }
-
-        .criterio {
-            margin-bottom: 20px;
-            background: rgba(0, 0, 0, 0.3);
-            padding: 15px;
-            border-radius: 8px;
-            border-left: 4px solid #4CAF50;
-        }
-
-        .criterio-nombre {
-            color: #aaa;
-            font-size: 0.9em;
-            margin-bottom: 10px;
-            font-weight: 600;
-        }
-
-        .puntos-select {
-            width: 100%;
-            padding: 12px;
-            font-size: 1.1em;
-            border: 2px solid #FFD700;
-            border-radius: 6px;
-            background: rgba(0, 0, 0, 0.5);
-            color: white;
-            text-align: center;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        .puntos-select:focus {
-            outline: none;
-            border-color: #FF6B35;
-            box-shadow: 0 0 15px rgba(255, 107, 53, 0.3);
-        }
-
-        .puntos-select option {
-            background: #333;
-            color: white;
-        }
-
-        .total-puntos {
-            background: linear-gradient(135deg, #4CAF50, #45a049);
-            padding: 15px;
-            border-radius: 8px;
-            text-align: center;
-            margin-top: 20px;
-            font-size: 1.3em;
-            font-weight: 900;
         }
 
         .ranking-section {
@@ -398,6 +343,17 @@
             color: #FDB833;
         }
 
+        .ranking-detalles {
+            flex: 0.5;
+            font-size: 0.85em;
+            color: #aaa;
+        }
+
+        .ranking-jurados {
+            display: block;
+            color: #ccc;
+        }
+
         .productos-section {
             margin-top: 40px;
             background: rgba(255, 255, 255, 0.05);
@@ -413,7 +369,7 @@
 
         .productos-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 15px;
         }
 
@@ -439,8 +395,11 @@
         }
 
         .producto-card p {
-            font-size: 0.9em;
+            font-size: 0.85em;
             color: #aaa;
+            line-height: 1.5;
+            max-height: 120px;
+            overflow-y: auto;
         }
     </style>
 </head>
@@ -496,86 +455,6 @@
                 </div>
                 <div class="timer-info">Máximo: 5 minutos por equipo</div>
             </div>
-
-            <div class="scoring-section">
-                <h3>Puntuación</h3>
-                
-                <div class="criterio">
-                    <div class="criterio-nombre">Gancho/Presentación</div>
-                    <select class="puntos-select" id="pts1" onchange="calcularTotal()">
-                        <option value="0">Sin calificar</option>
-                        <option value="1">1 - Deficiente</option>
-                        <option value="2">2 - Regular</option>
-                        <option value="3">3 - Bueno</option>
-                        <option value="4">4 - Muy Bueno</option>
-                        <option value="5">5 - Excelente</option>
-                    </select>
-                </div>
-                
-                <div class="criterio">
-                    <div class="criterio-nombre">Descripción Producto</div>
-                    <select class="puntos-select" id="pts2" onchange="calcularTotal()">
-                        <option value="0">Sin calificar</option>
-                        <option value="1">1 - Deficiente</option>
-                        <option value="2">2 - Regular</option>
-                        <option value="3">3 - Bueno</option>
-                        <option value="4">4 - Muy Bueno</option>
-                        <option value="5">5 - Excelente</option>
-                    </select>
-                </div>
-                
-                <div class="criterio">
-                    <div class="criterio-nombre">Manejo de Objeciones</div>
-                    <select class="puntos-select" id="pts3" onchange="calcularTotal()">
-                        <option value="0">Sin calificar</option>
-                        <option value="1">1 - Deficiente</option>
-                        <option value="2">2 - Regular</option>
-                        <option value="3">3 - Bueno</option>
-                        <option value="4">4 - Muy Bueno</option>
-                        <option value="5">5 - Excelente</option>
-                    </select>
-                </div>
-                
-                <div class="criterio">
-                    <div class="criterio-nombre">Energía/Convencimiento</div>
-                    <select class="puntos-select" id="pts4" onchange="calcularTotal()">
-                        <option value="0">Sin calificar</option>
-                        <option value="1">1 - Deficiente</option>
-                        <option value="2">2 - Regular</option>
-                        <option value="3">3 - Bueno</option>
-                        <option value="4">4 - Muy Bueno</option>
-                        <option value="5">5 - Excelente</option>
-                    </select>
-                </div>
-
-                <div class="criterio">
-                    <div class="criterio-nombre">Cierre Efectivo</div>
-                    <select class="puntos-select" id="pts5" onchange="calcularTotal()">
-                        <option value="0">Sin calificar</option>
-                        <option value="1">1 - Deficiente</option>
-                        <option value="2">2 - Regular</option>
-                        <option value="3">3 - Bueno</option>
-                        <option value="4">4 - Muy Bueno</option>
-                        <option value="5">5 - Excelente</option>
-                    </select>
-                </div>
-
-                <div class="criterio">
-                    <div class="criterio-nombre">Participación del Equipo Completo</div>
-                    <select class="puntos-select" id="pts6" onchange="calcularTotal()">
-                        <option value="0">Sin calificar</option>
-                        <option value="5">5 - Todo el equipo participa</option>
-                        <option value="3">3 - Participa la mayoría</option>
-                        <option value="1">1 - Solo 1-2 personas presentan</option>
-                    </select>
-                </div>
-
-                <div class="total-puntos">
-                    TOTAL: <span id="totalPuntos">0</span> / 25
-                </div>
-
-                <button class="btn btn-primary" style="width: 100%; margin-top: 20px;" onclick="guardarPuntuacion()">✓ GUARDAR PUNTUACIÓN</button>
-            </div>
         </div>
 
         <div class="ranking-section">
@@ -591,15 +470,11 @@
 
     <script>
         const productos = [
-{ id: 1, nombre: "SmartBand 10X", desc: "📝 DESCRIPCIÓN: Pulsera inteligente que mide productividad laboral\n💰 PRECIO: $299 USD\n👥 PÚBLICO: Ejecutivos, Emprendedores, Profesionales\n\n💡 PUNTOS CLAVE: +40% productividad, Sincronización completa, Reportes automáticos, 7 días sin carga\n⚠️ OBJECIONES: ¿Caro? ROI 3 meses | ¿Datos? Privado GDPR | ¿Compatible? iOS/Android\n📊 CASO ÉXITO: Vendedor incrementó ventas 35% en 2 meses" },
-
-{ id: 2, nombre: "CloudPhone Pro", desc: "📝 DESCRIPCIÓN: Teléfono 100% en la nube, sin batería física\n💰 PRECIO: $599 USD\n👥 PÚBLICO: Profesionales móviles, Viajeros frecuentes, Equipos remotos\n\n💡 PUNTOS CLAVE: Batería infinita, Acceso remoto total, Encriptación 256-bit, Soporte 24/7\n⚠️ OBJECIONES: ¿Sin internet? Modo offline | ¿Seguro? Backup automático | ¿Mi número? Portabilidad gratis\n📊 CASO ÉXITO: Ejecutivos Google/Apple lo usan, 15 horas semanales ahorradas" },
-
-{ id: 3, nombre: "MegaTablet Infinity", desc: "📝 DESCRIPCIÓN: Tablet 15 pulgadas que se pliega como papel\n💰 PRECIO: $799 USD\n👥 PÚBLICO: Creativos, Diseñadores, Productores de contenido, Estudiantes\n\n💡 PUNTOS CLAVE: Pantalla sin línea visible, Portátil tamaño cuaderno, Stylus 10k niveles, 15h batería\n⚠️ OBJECIONES: ¿Se daña pliegue? 100k tests garantizado | ¿Cara? Reemplaza 3 dispositivos | ¿Videos? 4K sin lag\n📊 CASO ÉXITO: Diseñadores ahorran 2h/día, Estudiantes ganaron 5 premios internacionales" },
-
-{ id: 4, nombre: "VentaBoost AI", desc: "📝 DESCRIPCIÓN: App con IA que predice objeciones en tiempo real\n💰 PRECIO: $199/mes o $1,990/año\n👥 PÚBLICO: Equipos de ventas, Call centers, Emprendedores B2B\n\n💡 PUNTOS CLAVE: 87% precisión en predicción, Respuestas en tiempo real, Análisis de sentimiento, Reportes automáticos\n⚠️ OBJECIONES: ¿Todas industrias? Se adapta | ¿Difícil? 5 min capacitación | ¿ROI? +45% cierre, se paga 1 mes\n📊 CASO ÉXITO: Vendedor pasó de 50% a 72% cierre, Aseguradora ganó $500k anuales" },
-
-{ id: 5, nombre: "SuperAudifonos X", desc: "📝 DESCRIPCIÓN: Audífonos traducen 120+ idiomas en tiempo real\n💰 PRECIO: $399 USD\n👥 PÚBLICO: Viajeros internacionales, Equipos globales, Negocios B2B\n\n💡 PUNTOS CLAVE: Traducción 120+ idiomas sin lag, Audio Hi-Fi cancelación ruido, 12h batería, Voz y escritura\n⚠️ OBJECIONES: ¿Precisión? 99.2% certificada | ¿Offline? Idiomas principales | ¿Suscripción? Compra única, actualizaciones gratis\n📊 CASO ÉXITO: Telecom cerró contratos 8 países nuevos, Nómada viaja 30 países diariamente" }
+            { id: 1, nombre: "SmartBand 10X", desc: "📝 DESCRIPCIÓN: Pulsera inteligente que mide productividad laboral\n💰 PRECIO: $299 USD\n👥 PÚBLICO: Ejecutivos, Emprendedores, Profesionales\n\n💡 PUNTOS CLAVE: +40% productividad, Sincronización completa, Reportes automáticos, 7 días sin carga\n⚠️ OBJECIONES: ¿Caro? ROI 3 meses | ¿Datos? Privado GDPR | ¿Compatible? iOS/Android\n📊 CASO ÉXITO: Vendedor incrementó ventas 35% en 2 meses" },
+            { id: 2, nombre: "CloudPhone Pro", desc: "📝 DESCRIPCIÓN: Teléfono 100% en la nube, sin batería física\n💰 PRECIO: $599 USD\n👥 PÚBLICO: Profesionales móviles, Viajeros frecuentes, Equipos remotos\n\n💡 PUNTOS CLAVE: Batería infinita, Acceso remoto total, Encriptación 256-bit, Soporte 24/7\n⚠️ OBJECIONES: ¿Sin internet? Modo offline | ¿Seguro? Backup automático | ¿Mi número? Portabilidad gratis\n📊 CASO ÉXITO: Ejecutivos Google/Apple lo usan, 15 horas semanales ahorradas" },
+            { id: 3, nombre: "MegaTablet Infinity", desc: "📝 DESCRIPCIÓN: Tablet 15 pulgadas que se pliega como papel\n💰 PRECIO: $799 USD\n👥 PÚBLICO: Creativos, Diseñadores, Productores de contenido, Estudiantes\n\n💡 PUNTOS CLAVE: Pantalla sin línea visible, Portátil tamaño cuaderno, Stylus 10k niveles, 15h batería\n⚠️ OBJECIONES: ¿Se daña pliegue? 100k tests garantizado | ¿Cara? Reemplaza 3 dispositivos | ¿Videos? 4K sin lag\n📊 CASO ÉXITO: Diseñadores ahorran 2h/día, Estudiantes ganaron 5 premios internacionales" },
+            { id: 4, nombre: "VentaBoost AI", desc: "📝 DESCRIPCIÓN: App con IA que predice objeciones en tiempo real\n💰 PRECIO: $199/mes o $1,990/año\n👥 PÚBLICO: Equipos de ventas, Call centers, Emprendedores B2B\n\n💡 PUNTOS CLAVE: 87% precisión en predicción, Respuestas en tiempo real, Análisis de sentimiento, Reportes automáticos\n⚠️ OBJECIONES: ¿Todas industrias? Se adapta | ¿Difícil? 5 min capacitación | ¿ROI? +45% cierre, se paga 1 mes\n📊 CASO ÉXITO: Vendedor pasó de 50% a 72% cierre, Aseguradora ganó $500k anuales" },
+            { id: 5, nombre: "SuperAudifonos X", desc: "📝 DESCRIPCIÓN: Audífonos traducen 120+ idiomas en tiempo real\n💰 PRECIO: $399 USD\n👥 PÚBLICO: Viajeros internacionales, Equipos globales, Negocios B2B\n\n💡 PUNTOS CLAVE: Traducción 120+ idiomas sin lag, Audio Hi-Fi cancelación ruido, 12h batería, Voz y escritura\n⚠️ OBJECIONES: ¿Precisión? 99.2% certificada | ¿Offline? Idiomas principales | ¿Suscripción? Compra única, actualizaciones gratis\n📊 CASO ÉXITO: Telecom cerró contratos 8 países nuevos, Nómada viaja 30 países diariamente" }
         ];
 
         let equipos = [
@@ -646,7 +521,6 @@
             document.getElementById('productoActual').textContent = producto.nombre;
             document.getElementById('descripcionProducto').textContent = producto.desc;
             
-            resetearPuntuacion();
             resetearTiempo();
         }
 
@@ -698,66 +572,79 @@
             }
         }
 
-        function calcularTotal() {
-            const pts = [
-                parseInt(document.getElementById('pts1').value) || 0,
-                parseInt(document.getElementById('pts2').value) || 0,
-                parseInt(document.getElementById('pts3').value) || 0,
-                parseInt(document.getElementById('pts4').value) || 0,
-                parseInt(document.getElementById('pts5').value) || 0,
-                parseInt(document.getElementById('pts6').value) || 0
-            ];
-            const total = pts.reduce((a, b) => a + b, 0);
-            document.getElementById('totalPuntos').textContent = total;
-        }
-
-        function guardarPuntuacion() {
-            if (!equipoActual) {
-                alert('Selecciona un equipo primero');
-                return;
-            }
-            const total = parseInt(document.getElementById('totalPuntos').textContent);
-            puntuaciones[equipoActual.id] = total;
-            actualizarRanking();
-            alert('✓ Puntuación guardada para ' + equipoActual.nombre);
-            resetearPuntuacion();
-        }
-
-        function resetearPuntuacion() {
-            document.getElementById('pts1').value = 0;
-            document.getElementById('pts2').value = 0;
-            document.getElementById('pts3').value = 0;
-            document.getElementById('pts4').value = 0;
-            document.getElementById('pts5').value = 0;
-            document.getElementById('pts6').value = 0;
-            document.getElementById('totalPuntos').textContent = 0;
-        }
-
         function actualizarRanking() {
-            const ranking = equipos.map(eq => ({
-                nombre: eq.nombre,
-                puntaje: puntuaciones[eq.id] || 0
-            })).sort((a, b) => b.puntaje - a.puntaje);
+            const sheetId = '1XbOAGQd8RLfR4EIWavqKDSV7G-Z6Zc1v4cuXmYnSmZM';
+            const gid = '0';
+            const url = `https://docs.google.com/spreadsheets/d/${sheetId}/export?format=csv&gid=${gid}`;
+            
+            fetch(url)
+                .then(response => response.text())
+                .then(data => {
+                    const lineas = data.split('\n');
+                    const ranking = [];
+                    
+                    for (let i = 1; i < lineas.length; i++) {
+                        if (lineas[i].trim() === '') continue;
+                        
+                        const columnas = lineas[i].split(',');
+                        const equipo = columnas[0].trim();
+                        const jurado1 = parseFloat(columnas[1]) || 0;
+                        const jurado2 = parseFloat(columnas[2]) || 0;
+                        const jurado3 = parseFloat(columnas[3]) || 0;
+                        
+                        let promedio = 0;
+                        let contadores = 0;
+                        
+                        if (jurado1 > 0) { promedio += jurado1; contadores++; }
+                        if (jurado2 > 0) { promedio += jurado2; contadores++; }
+                        if (jurado3 > 0) { promedio += jurado3; contadores++; }
+                        
+                        if (contadores > 0) {
+                            promedio = (promedio / contadores).toFixed(1);
+                        }
+                        
+                        if (equipo && promedio > 0) {
+                            ranking.push({
+                                nombre: equipo,
+                                puntaje: promedio,
+                                jurado1: jurado1 || '-',
+                                jurado2: jurado2 || '-',
+                                jurado3: jurado3 || '-'
+                            });
+                        }
+                    }
+                    
+                    ranking.sort((a, b) => b.puntaje - a.puntaje);
+                    
+                    const html = ranking.map((item, idx) => {
+                        let medallaPosicion = '';
+                        if (idx === 0) medallaPosicion = '🥇';
+                        else if (idx === 1) medallaPosicion = '🥈';
+                        else if (idx === 2) medallaPosicion = '🥉';
 
-            const html = ranking.map((item, idx) => {
-                let medallaPosicion = '';
-                if (idx === 0) medallaPosicion = '🥇';
-                else if (idx === 1) medallaPosicion = '🥈';
-                else if (idx === 2) medallaPosicion = '🥉';
+                        const clasePos = idx === 0 ? 'oro' : idx === 1 ? 'plata' : idx === 2 ? 'bronce' : '';
 
-                const clasePos = idx === 0 ? 'oro' : idx === 1 ? 'plata' : idx === 2 ? 'bronce' : '';
+                        return `
+                            <li class="ranking-item">
+                                <div class="posicion ${clasePos}">${medallaPosicion} ${idx + 1}</div>
+                                <div class="ranking-nombre">${item.nombre}</div>
+                                <div class="ranking-detalles">
+                                    <span class="ranking-jurados">J1: ${item.jurado1} | J2: ${item.jurado2} | J3: ${item.jurado3}</span>
+                                </div>
+                                <div class="ranking-puntaje">${item.puntaje}</div>
+                            </li>
+                        `;
+                    }).join('');
 
-                return `
-                    <li class="ranking-item">
-                        <div class="posicion ${clasePos}">${medallaPosicion} ${idx + 1}</div>
-                        <div class="ranking-nombre">${item.nombre}</div>
-                        <div class="ranking-puntaje">${item.puntaje} pts</div>
-                    </li>
-                `;
-            }).join('');
-
-            document.getElementById('rankingList').innerHTML = html;
+                    document.getElementById('rankingList').innerHTML = html || '<li style="text-align: center; color: #aaa; padding: 20px;">Esperando calificaciones...</li>';
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    document.getElementById('rankingList').innerHTML = '<li style="text-align: center; color: #aaa; padding: 20px;">Error al cargar ranking</li>';
+                });
         }
+
+        setInterval(actualizarRanking, 10000);
 
         function mostrarProductos() {
             const html = productos.map(prod => `
