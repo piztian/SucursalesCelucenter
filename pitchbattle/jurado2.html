@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>⚡ PITCH BATTLE - Jurado 2</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            color: white;
+            overflow-x: hidden;
+        }
+
+        .contenedor {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            animation: slideDown 0.8s ease-out;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .title {
+            font-size: 2.5em;
+            font-weight: 900;
+            background: linear-gradient(135deg, #FF6B35, #F7931E, #FDB833);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 5px;
+        }
+
+        .jurado-badge {
+            display: inline-block;
+            background: #FF6B35;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 1.1em;
+            margin-bottom: 20px;
+        }
+
+        .info-equipo {
+            background: linear-gradient(135deg, rgba(255, 107, 53, 0.1), rgba(247, 147, 30, 0.1));
+            border: 2px solid #FF6B35;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .nombre-equipo-grande {
+            font-size: 2em;
+            font-weight: 900;
+            color: #FDB833;
+            margin-bottom: 10px;
+        }
+
+        .producto-equipo {
+            font-size: 1.3em;
+            color: #fff;
+        }
+
+        .scoring-section {
+            background: rgba(255, 255, 255, 0.05);
+            border: 3px solid #4CAF50;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .scoring-section h3 {
+            color: #4CAF50;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            font-size: 1.3em;
+            text-align: center;
+        }
+
+        .criterio {
+            margin-bottom: 25px;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #4CAF50;
+        }
+
+        .criterio-nombre {
+            color: #FDB833;
+            font-size: 1em;
+            margin-bottom: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .puntos-select {
+            width: 100%;
+            padding: 12px;
+            font-size: 1.1em;
+            border: 2px solid #FFD700;
+            border-radius: 6px;
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            text-align: center;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .puntos-select:focus {
+            outline: none;
+            border-color: #FF6B35;
+            box-shadow: 0 0 15px rgba(255, 107, 53, 0.3);
+        }
+
+        .puntos-select option {
+            background: #333;
+            color: white;
+        }
+
+        .total-puntos {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            margin-top: 25px;
+            font-size: 1.5em;
+            font-weight: 900;
+        }
+
+        .botones {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-guardar {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .btn-guardar:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(76, 175, 80, 0.6);
+        }
+
+        .btn-siguiente {
+            background: linear-gradient(135deg, #FF6B35, #F7931E);
+            color: white;
+        }
+
+        .btn-siguiente:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(255, 107, 53, 0.6);
+        }
+
+        .btn-reset {
+            background: #666;
+            color: white;
+        }
+
+        .btn-reset:hover {
+            background: #777;
+        }
+
+        .mensaje {
+            background: #2d5016;
+            border: 2px solid #4CAF50;
+            color: #4CAF50;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            margin-top: 20px;
+            display: none;
+            font-weight: 700;
+        }
+
+        .mensaje.show {
+            display: block;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .select-equipo {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid #FF6B35;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .select-equipo label {
+            color: #FDB833;
+            font-weight: 700;
+            margin-right: 15px;
+            text-transform: uppercase;
+        }
+
+        .select-equipo select {
+            padding: 10px 15px;
+            font-size: 1em;
+            border: 2px solid #FF6B35;
+            border-radius: 6px;
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            cursor: pointer;
+            min-width: 300px;
+        }
+
+        .select-equipo select option {
+            background: #333;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="contenedor">
+        <div class="header">
+            <div class="title">⚡ PITCH BATTLE</div>
+            <div class="jurado-badge">👨‍⚖️ JURADO 1</div>
+        </div>
+
+        <div class="select-equipo">
+            <label>Selecciona Equipo:</label>
+            <select id="seleccionEquipo" onchange="cambiarEquipo()">
+                <option value="">-- SELECCIONAR EQUIPO --</option>
+            </select>
+        </div>
+
+        <div class="info-equipo" id="infoEquipo" style="display: none;">
+            <div class="nombre-equipo-grande" id="nombreEquipoGrande">---</div>
+            <div class="producto-equipo" id="productoEquipo">---</div>
+        </div>
+
+        <div class="scoring-section" id="scoringSection" style="display: none;">
+            <h3>📊 CALIFICACIÓN DEL EQUIPO</h3>
+            
+            <div class="criterio">
+                <div class="criterio-nombre">1️⃣ Gancho/Presentación</div>
+                <select class="puntos-select" id="pts1" onchange="calcularTotal()">
+                    <option value="0">Sin calificar</option>
+                    <option value="1">1 - Deficiente</option>
+                    <option value="2">2 - Regular</option>
+                    <option value="3">3 - Bueno</option>
+                    <option value="4">4 - Muy Bueno</option>
+                    <option value="5">5 - Excelente</option>
+                </select>
+            </div>
+            
+            <div class="criterio">
+                <div class="criterio-nombre">2️⃣ Descripción Producto</div>
+                <select class="puntos-select" id="pts2" onchange="calcularTotal()">
+                    <option value="0">Sin calificar</option>
+                    <option value="1">1 - Deficiente</option>
+                    <option value="2">2 - Regular</option>
+                    <option value="3">3 - Bueno</option>
+                    <option value="4">4 - Muy Bueno</option>
+                    <option value="5">5 - Excelente</option>
+                </select>
+            </div>
+            
+            <div class="criterio">
+                <div class="criterio-nombre">3️⃣ Manejo de Objeciones</div>
+                <select class="puntos-select" id="pts3" onchange="calcularTotal()">
+                    <option value="0">Sin calificar</option>
+                    <option value="1">1 - Deficiente</option>
+                    <option value="2">2 - Regular</option>
+                    <option value="3">3 - Bueno</option>
+                    <option value="4">4 - Muy Bueno</option>
+                    <option value="5">5 - Excelente</option>
+                </select>
+            </div>
+            
+            <div class="criterio">
+                <div class="criterio-nombre">4️⃣ Energía/Convencimiento</div>
+                <select class="puntos-select" id="pts4" onchange="calcularTotal()">
+                    <option value="0">Sin calificar</option>
+                    <option value="1">1 - Deficiente</option>
+                    <option value="2">2 - Regular</option>
+                    <option value="3">3 - Bueno</option>
+                    <option value="4">4 - Muy Bueno</option>
+                    <option value="5">5 - Excelente</option>
+                </select>
+            </div>
+
+            <div class="criterio">
+                <div class="criterio-nombre">5️⃣ Cierre Efectivo</div>
+                <select class="puntos-select" id="pts5" onchange="calcularTotal()">
+                    <option value="0">Sin calificar</option>
+                    <option value="1">1 - Deficiente</option>
+                    <option value="2">2 - Regular</option>
+                    <option value="3">3 - Bueno</option>
+                    <option value="4">4 - Muy Bueno</option>
+                    <option value="5">5 - Excelente</option>
+                </select>
+            </div>
+
+            <div class="criterio">
+                <div class="criterio-nombre">6️⃣ Participación del Equipo Completo</div>
+                <select class="puntos-select" id="pts6" onchange="calcularTotal()">
+                    <option value="0">Sin calificar</option>
+                    <option value="5">5 - Todo el equipo participa</option>
+                    <option value="3">3 - Participa la mayoría</option>
+                    <option value="1">1 - Solo 1-2 personas presentan</option>
+                </select>
+            </div>
+
+            <div class="total-puntos">
+                TOTAL: <span id="totalPuntos">0</span> / 30
+            </div>
+
+            <div class="botones">
+                <button class="btn btn-guardar" onclick="guardarCalificacion()">✓ GUARDAR CALIFICACIÓN</button>
+                <button class="btn btn-reset" onclick="resetearFormulario()">🔄 LIMPIAR</button>
+            </div>
+
+            <div class="mensaje" id="mensaje">✓ Calificación guardada correctamente</div>
+        </div>
+    </div>
+
+    <script>
+        const equipos = [
+            { id: 1, nombre: "Los Titanes", producto: "SmartBand 10X" },
+            { id: 2, nombre: "Vendedores Imparables", producto: "CloudPhone Pro" },
+            { id: 3, nombre: "Guerreros 10X", producto: "MegaTablet Infinity" },
+            { id: 4, nombre: "Dinastía de Ventas", producto: "VentaBoost AI" },
+            { id: 5, nombre: "El Equipo Dorado", producto: "SuperAudifonos X" }
+        ];
+
+        let equipoActual = null;
+        const JURADO_ID = "jurado1";
+
+        function inicializar() {
+            cargarSelectEquipos();
+            cargarCalificacionesPrevias();
+        }
+
+        function cargarSelectEquipos() {
+            const select = document.getElementById('seleccionEquipo');
+            equipos.forEach(eq => {
+                const option = document.createElement('option');
+                option.value = eq.id;
+                option.textContent = eq.nombre;
+                select.appendChild(option);
+            });
+        }
+
+        function cambiarEquipo() {
+            const id = document.getElementById('seleccionEquipo').value;
+            if (!id) {
+                document.getElementById('infoEquipo').style.display = 'none';
+                document.getElementById('scoringSection').style.display = 'none';
+                resetearFormulario();
+                return;
+            }
+            
+            equipoActual = equipos.find(e => e.id == id);
+            
+            document.getElementById('nombreEquipoGrande').textContent = equipoActual.nombre.toUpperCase();
+            document.getElementById('productoEquipo').textContent = equipoActual.producto;
+            document.getElementById('infoEquipo').style.display = 'block';
+            document.getElementById('scoringSection').style.display = 'block';
+            
+            cargarCalificacionesEquipo();
+        }
+
+        function cargarCalificacionesEquipo() {
+            if (!equipoActual) return;
+            
+            const clave = `${JURADO_ID}_equipo${equipoActual.id}`;
+            const datos = localStorage.getItem(clave);
+            
+            if (datos) {
+                const parsed = JSON.parse(datos);
+                document.getElementById('pts1').value = parsed.pts1 || 0;
+                document.getElementById('pts2').value = parsed.pts2 || 0;
+                document.getElementById('pts3').value = parsed.pts3 || 0;
+                document.getElementById('pts4').value = parsed.pts4 || 0;
+                document.getElementById('pts5').value = parsed.pts5 || 0;
+                document.getElementById('pts6').value = parsed.pts6 || 0;
+            } else {
+                resetearFormulario();
+            }
+            calcularTotal();
+        }
+
+        function calcularTotal() {
+            const pts = [
+                parseInt(document.getElementById('pts1').value) || 0,
+                parseInt(document.getElementById('pts2').value) || 0,
+                parseInt(document.getElementById('pts3').value) || 0,
+                parseInt(document.getElementById('pts4').value) || 0,
+                parseInt(document.getElementById('pts5').value) || 0,
+                parseInt(document.getElementById('pts6').value) || 0
+            ];
+            const total = pts.reduce((a, b) => a + b, 0);
+            document.getElementById('totalPuntos').textContent = total;
+        }
+
+        function guardarCalificacion() {
+            if (!equipoActual) {
+                alert('Selecciona un equipo primero');
+                return;
+            }
+
+            const total = document.getElementById('totalPuntos').textContent;
+
+            // Enviar a Google Sheets mediante Apps Script
+            const urlSheet = 'https://script.google.com/macros/s/AKfycbyoBFl05dnuIDu8CXRPk6MdVvl72fxOJm56i7V7TakjJePTHQT0tSYJb8JEgSvMLnWZug/exec';
+            
+            const datos = {
+                equipo: equipoActual.nombre,
+                jurado: 'Jurado2',
+                pts1: document.getElementById('pts1').value,
+                pts2: document.getElementById('pts2').value,
+                pts3: document.getElementById('pts3').value,
+                pts4: document.getElementById('pts4').value,
+                pts5: document.getElementById('pts5').value,
+                pts6: document.getElementById('pts6').value,
+                total: total
+            };
+
+            fetch(urlSheet, {
+                method: 'POST',
+                body: JSON.stringify(datos)
+            })
+            .then(() => {
+                mostrarMensaje();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                mostrarMensaje();
+            });
+        }
+
+        function mostrarMensaje() {
+            const msg = document.getElementById('mensaje');
+            msg.classList.add('show');
+            setTimeout(() => {
+                msg.classList.remove('show');
+            }, 2000);
+        }
+
+        function resetearFormulario() {
+            document.getElementById('pts1').value = 0;
+            document.getElementById('pts2').value = 0;
+            document.getElementById('pts3').value = 0;
+            document.getElementById('pts4').value = 0;
+            document.getElementById('pts5').value = 0;
+            document.getElementById('pts6').value = 0;
+            document.getElementById('totalPuntos').textContent = 0;
+        }
+
+        function cargarCalificacionesPrevias() {
+            // Puede usarse para mostrar resumen de calificaciones previas
+        }
+
+        inicializar();
+    </script>
+</body>
+</html>
