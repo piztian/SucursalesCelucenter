@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Sucursales Celucenter - ¡Feliz Navidad! 🎄</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    *{margin: 0;
+      padding: 0;
+      box-sizing: border-box;}body{font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #1a0f0a 0%, #2d1f1a 50%, #1a0f0a 100%);
+      min-height: 100vh;
+      color: #fff;
+      overflow-x: hidden;}/* Fondo animado navideño */
+    body::before{content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: 
+        radial-gradient(circle at 20% 50%, rgba(198, 15, 15, 0.12) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(34, 139, 34, 0.12) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: 1;}h1{text-align: center;
+      padding: 40px 20px 20px;
+      font-size: 3.5em;
+      background: linear-gradient(45deg, #c60f0f, #ffd700, #c60f0f);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: navGlow 2s ease-in-out infinite;
+      position: relative;
+      z-index: 2;}@keyframes navGlow{0%, 100%{filter: drop-shadow(0 0 5px rgba(198, 15, 15, 0.3));}50%{filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.4));}}.subtitle{text-align: center;
+      font-size: 1.2em;
+      color: #ffd700;
+      margin-bottom: 15px;
+      position: relative;
+      z-index: 2;
+      text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);}.festive-message{text-align: center;
+      font-size: 1em;
+      color: #ffb6c1;
+      margin-bottom: 30px;
+      position: relative;
+      z-index: 2;
+      font-style: italic;
+      text-shadow: 0 0 8px rgba(255, 182, 193, 0.4);}.grid{display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 30px;
+      padding: 30px;
+      max-width: 1400px;
+      margin: auto;
+      position: relative;
+      z-index: 2;}.card{position: relative;
+      overflow: hidden;
+      border-radius: 15px;
+      background: rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(10px);
+      border: 2px solid rgba(198, 15, 15, 0.4);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(198, 15, 15, 0.1);
+      transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      cursor: pointer;}.card:hover{transform: translateY(-15px) scale(1.02);
+      border-color: rgba(255, 215, 0, 0.8);
+      box-shadow: 0 15px 50px rgba(198, 15, 15, 0.4), 0 0 30px rgba(255, 215, 0, 0.3), inset 0 1px 0 rgba(198, 15, 15, 0.2);}.card::before{content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.15), transparent);
+      transition: left 0.5s;
+      z-index: 1;}.card:hover::before{left: 100%;}.card-ribbon{position: absolute;
+      top: 10px;
+      right: -35px;
+      width: 70px;
+      background: #c60f0f;
+      color: #fff;
+      text-align: center;
+      padding: 5px 0;
+      transform: rotate(45deg);
+      font-weight: bold;
+      font-size: 0.8em;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.3);
+      z-index: 5;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.5);}.card img{width: 100%;
+      height: 240px;
+      object-fit: contain;
+      background: linear-gradient(135deg, rgba(198, 15, 15, 0.08), rgba(34, 139, 34, 0.08));
+      transition: transform 0.3s ease;
+      position: relative;
+      z-index: 0;}.card:hover img{transform: scale(1.08);}.info{padding: 20px;
+      background: rgba(0, 0, 0, 0.3);
+      position: relative;
+      z-index: 2;
+      border-top: 1px solid rgba(198, 15, 15, 0.2);}.nombre{font-weight: bold;
+      font-size: 1.4em;
+      margin-bottom: 10px;
+      color: #ffd700;
+      text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);}.direccion{font-size: 0.95em;
+      margin: 8px 0;
+      color: #ffb6c1;
+      display: flex;
+      align-items: center;
+      gap: 8px;}.direccion::before{content: '🎄';
+      font-size: 1.1em;}.button-group{display: flex;
+      gap: 10px;
+      margin-top: 12px;
+      flex-wrap: wrap;}.link-maps, .link-whatsapp, .link-spotify{display: inline-block;
+      padding: 10px 15px;
+      font-size: 0.95em;
+      text-decoration: none;
+      color: #fff;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      border: 1px solid;
+      position: relative;
+      z-index: 3;
+      flex: 1;
+      text-align: center;
+      min-width: 130px;}.link-maps{background: linear-gradient(135deg, #c60f0f, #8b0000);
+      border-color: rgba(198, 15, 15, 0.5);}.link-maps:hover{background: linear-gradient(135deg, #8b0000, #c60f0f);
+      box-shadow: 0 0 20px rgba(198, 15, 15, 0.6);
+      transform: translateX(5px);}.link-whatsapp{background: linear-gradient(135deg, #228b22, #32cd32);
+      border-color: rgba(34, 139, 34, 0.5);}.link-whatsapp:hover{background: linear-gradient(135deg, #32cd32, #228b22);
+      box-shadow: 0 0 20px rgba(34, 139, 34, 0.6);
+      transform: translateX(5px);}.link-spotify{background: linear-gradient(135deg, #ffd700, #ffed4e);
+      border-color: rgba(255, 215, 0, 0.5);
+      color: #1a0f0a;}.link-spotify:hover{background: linear-gradient(135deg, #ffed4e, #ffd700);
+      box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+      transform: translateX(5px);
+      color: #1a0f0a;}/* Animación de nieve */
+    .snowflake{position: fixed;
+      font-size: 1.5em;
+      animation: snowfall 10s linear infinite;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.7;}@keyframes snowfall{from{transform: translateY(-10vh) rotate(0deg);}to{transform: translateY(100vh) rotate(360deg);}}.particle{position: fixed;
+      font-size: 1.5em;
+      animation: float 12s infinite ease-in-out;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.7;}@keyframes float{0%, 100%{transform: translateX(0) translateY(0) rotate(0deg);}25%{transform: translateX(40px) translateY(-30px) rotate(90deg);}50%{transform: translateX(0) translateY(-50px) rotate(180deg);}75%{transform: translateX(-40px) translateY(-30px) rotate(270deg);}}@media (max-width: 768px){h1{font-size: 2.5em;
+        padding: 30px 20px 15px;}.grid{grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 20px;
+        padding: 20px;}.card{border-radius: 12px;}.button-group{flex-direction: column;}}</style>
+</head>
+<body>
+
+  <!-- Nieve cayendo animada -->
+  <div class="snowflake" style="left: 10%; animation-delay: 0s;">❄️</div>
+  <div class="snowflake" style="left: 20%; animation-delay: 2s;">❄️</div>
+  <div class="snowflake" style="left: 30%; animation-delay: 4s;">❄️</div>
+  <div class="snowflake" style="left: 40%; animation-delay: 1s;">❄️</div>
+  <div class="snowflake" style="left: 50%; animation-delay: 3s;">❄️</div>
+  <div class="snowflake" style="left: 60%; animation-delay: 5s;">❄️</div>
+  <div class="snowflake" style="left: 70%; animation-delay: 2.5s;">❄️</div>
+  <div class="snowflake" style="left: 80%; animation-delay: 4.5s;">❄️</div>
+  <div class="snowflake" style="left: 90%; animation-delay: 1.5s;">❄️</div>
+
+  <!-- Decoración navideña flotante -->
+  <div class="particle" style="left: 10%; top: 15%; animation-delay: 0s;">🎁</div>
+  <div class="particle" style="left: 85%; top: 25%; animation-delay: 2s;">🎄</div>
+  <div class="particle" style="left: 50%; top: 10%; animation-delay: 4s;">⭐</div>
+
+  <h1>🎄 Sucursales Celucenter 🎅</h1>
+  <p class="subtitle">¡Navidad es tiempo de conexión y alegría!</p>
+  <p class="festive-message">Visita cualquiera de nuestras sucursales y disfruta de increíbles ofertas navideñas 🎉</p>
+
+  <div class="grid" id="catalogo"></div>
+
+  <script>
+    // Cargar sucursales
+    const container = document.getElementById("catalogo");
+
+    fetch("https://opensheet.elk.sh/1La-5XY4i9Ng3zpiXrre5tyAqANxpb9yuZeS8muFiZXA/Lista%20CC")
+      .then(response => response.json())
+      .then(data =>{container.innerHTML = "";
+
+        data.forEach((item, index) =>{let imagenes =[];
+
+          if (item['Archivo']&& item['Archivo'].trim() !== ""){imagenes = item['Archivo'].split(',').map(nombre =>
+              `https://raw.githubusercontent.com/piztian/SucursalesCelucenter/main/fotos/${nombre.trim()}`
+            );}else if (item['URL']){imagenes =[item['URL']];}if (imagenes.length === 0) return;
+
+          const idCarrusel = `carrusel-${index}`;
+          const waLink = item['Walink']|| '';
+          const whatsappButton = waLink ? `<a class="link-whatsapp" href="${waLink}" target="_blank">💬 WhatsApp</a>` : '';
+          const spotifyButton = waLink ? `<a class="link-spotify" href="${waLink}" target="_blank">🎵 Spotify</a>` : '';
+
+          const html = `
+            <div class="card">
+              <div class="card-ribbon">NAVIDAD</div>
+              <a href="https://celucentershop.bitrix24.site/detallesucursal/?sucursal=${encodeURIComponent(item['Nombre de Sucursal'])}">
+                <img id="${idCarrusel}" src="${imagenes[0]}" alt="${item['Nombre de Sucursal']}">
+              </a>
+              <div class="info">
+                <div class="nombre">✨ ${item['Nombre de Sucursal']|| ''} ✨</div>
+                <div class="direccion">${item.Dirección || ''}</div>
+                <div class="button-group">
+                  <a class="link-maps" href="${item['Link de Ubicación en Maps']}" target="_blank">🗺️ Ubicación</a>
+                  ${whatsappButton}${spotifyButton}</div>
+              </div>
+            </div>
+          `;
+
+          container.insertAdjacentHTML("beforeend", html);
+
+          if (imagenes.length > 1){let i = 0;
+            setInterval(() =>{i = (i + 1) % imagenes.length;
+              const imgEl = document.getElementById(idCarrusel);
+              if (imgEl){imgEl.style.opacity = 0;
+                setTimeout(() =>{imgEl.src = imagenes[i];
+                  imgEl.style.opacity = 1;}, 300);}}, 3000);}});});
+  </script>
+
+</body>
+</html>
