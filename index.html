@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Sucursales Celucenter - ¡Feliz Día del Amor y la Amistad! 💖</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Segoe UI',sans-serif;background:linear-gradient(135deg,#1a0a0f 0%,#2d1a24 50%,#1a0a0f 100%);min-height:100vh;color:#fff;overflow-x:hidden;}
+body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;background:radial-gradient(circle at 20% 50%,rgba(255,20,147,0.12) 0%,transparent 50%),radial-gradient(circle at 80% 80%,rgba(255,105,180,0.12) 0%,transparent 50%);pointer-events:none;z-index:1;}
+h1{text-align:center;padding:40px 20px 20px;font-size:3.5em;background:linear-gradient(45deg,#ff1493,#ff69b4,#ff1493);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:loveGlow 2s ease-in-out infinite;position:relative;z-index:2;}
+@keyframes loveGlow{0%,100%{filter:drop-shadow(0 0 5px rgba(255,20,147,0.3));}50%{filter:drop-shadow(0 0 10px rgba(255,105,180,0.4));}}
+.subtitle{text-align:center;font-size:1.2em;color:#ff69b4;margin-bottom:15px;position:relative;z-index:2;text-shadow:0 0 10px rgba(255,105,180,0.5);}
+.festive-message{text-align:center;font-size:1em;color:#ffb6e1;margin-bottom:30px;position:relative;z-index:2;font-style:italic;text-shadow:0 0 8px rgba(255,182,225,0.4);}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:30px;padding:30px;max-width:1400px;margin:auto;position:relative;z-index:2;}
+.card{position:relative;overflow:hidden;border-radius:15px;background:rgba(255,255,255,0.03);backdrop-filter:blur(10px);border:2px solid rgba(255,20,147,0.4);box-shadow:0 8px 32px rgba(0,0,0,0.3),inset 0 1px 0 rgba(255,20,147,0.1);transition:all 0.4s cubic-bezier(0.34,1.56,0.64,1);cursor:pointer;}
+.card:hover{transform:translateY(-15px) scale(1.02);border-color:rgba(255,105,180,0.8);box-shadow:0 15px 50px rgba(255,20,147,0.4),0 0 30px rgba(255,105,180,0.3),inset 0 1px 0 rgba(255,20,147,0.2);}
+.card::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,105,180,0.15),transparent);transition:left 0.5s;z-index:1;}
+.card:hover::before{left:100%;}
+.card-ribbon{position:absolute;top:10px;right:-35px;width:90px;background:#ff1493;color:#fff;text-align:center;padding:5px 0;transform:rotate(45deg);font-weight:bold;font-size:0.8em;box-shadow:0 3px 8px rgba(0,0,0,0.3);z-index:5;text-shadow:0 1px 2px rgba(0,0,0,0.5);}
+.card img{width:100%;height:240px;object-fit:contain;background:linear-gradient(135deg,rgba(255,20,147,0.08),rgba(255,105,180,0.08));transition:transform 0.3s ease, opacity 0.3s ease;position:relative;z-index:0;}
+.card:hover img{transform:scale(1.08);}
+.info{padding:20px;background:rgba(0,0,0,0.3);position:relative;z-index:2;border-top:1px solid rgba(255,20,147,0.2);}
+.nombre{font-weight:bold;font-size:1.4em;margin-bottom:10px;color:#ff69b4;text-shadow:0 0 10px rgba(255,105,180,0.5);}
+.direccion{font-size:0.95em;margin:8px 0;color:#ffb6e1;display:flex;align-items:center;gap:8px;}
+.direccion::before{content:'💕';font-size:1.1em;}
+.button-group{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap;}
+.link-maps,.link-whatsapp,.link-spotify{display:inline-block;padding:10px 15px;font-size:0.95em;text-decoration:none;color:#fff;border-radius:8px;transition:all 0.3s ease;border:1px solid;position:relative;z-index:3;flex:1;text-align:center;min-width:130px;}
+.link-maps{background:linear-gradient(135deg,#ff1493,#c71585);border-color:rgba(255,20,147,0.5);}
+.link-maps:hover{background:linear-gradient(135deg,#c71585,#ff1493);box-shadow:0 0 20px rgba(255,20,147,0.6);transform:translateX(5px);}
+.link-whatsapp{background:linear-gradient(135deg,#ff69b4,#ff1493);border-color:rgba(255,105,180,0.5);}
+.link-whatsapp:hover{background:linear-gradient(135deg,#ff1493,#ff69b4);box-shadow:0 0 20px rgba(255,105,180,0.6);transform:translateX(5px);}
+.link-spotify{background:linear-gradient(135deg,#ff69b4,#ffb6e1);border-color:rgba(255,105,180,0.5);color:#8b0045;}
+.link-spotify:hover{background:linear-gradient(135deg,#ffb6e1,#ff69b4);box-shadow:0 0 20px rgba(255,182,225,0.6);transform:translateX(5px);color:#8b0045;}
+.no-photo{display:flex;align-items:center;justify-content:center;height:240px;background:linear-gradient(135deg,rgba(255,20,147,0.08),rgba(255,105,180,0.08));color:#ff69b4;font-size:1.2em;opacity:0.7;}
+.heart{position:fixed;font-size:1.5em;animation:heartfall 10s linear infinite;pointer-events:none;z-index:0;opacity:0.7;}
+@keyframes heartfall{from{transform:translateY(-10vh) rotate(0deg);}to{transform:translateY(100vh) rotate(360deg);}}
+.particle{position:fixed;font-size:1.5em;animation:float 12s infinite ease-in-out;pointer-events:none;z-index:0;opacity:0.7;}
+@keyframes float{0%,100%{transform:translateX(0) translateY(0) rotate(0deg);}25%{transform:translateX(40px) translateY(-30px) rotate(90deg);}50%{transform:translateX(0) translateY(-50px) rotate(180deg);}75%{transform:translateX(-40px) translateY(-30px) rotate(270deg);}}
+@media(max-width:768px){h1{font-size:2.5em;padding:30px 20px 15px;}.grid{grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px;padding:20px;}.card{border-radius:12px;}.button-group{flex-direction:column;}}
+</style>
+</head>
+<body>
+
+<!-- Corazones cayendo animados -->
+<div class="heart" style="left:10%;animation-delay:0s;">💖</div>
+<div class="heart" style="left:20%;animation-delay:2s;">❤️</div>
+<div class="heart" style="left:30%;animation-delay:4s;">💗</div>
+<div class="heart" style="left:40%;animation-delay:1s;">💕</div>
+<div class="heart" style="left:50%;animation-delay:3s;">💝</div>
+<div class="heart" style="left:60%;animation-delay:5s;">💖</div>
+<div class="heart" style="left:70%;animation-delay:2.5s;">❤️</div>
+<div class="heart" style="left:80%;animation-delay:4.5s;">💗</div>
+<div class="heart" style="left:90%;animation-delay:1.5s;">💕</div>
+
+<!-- Decoración romántica flotante -->
+<div class="particle" style="left:10%;top:15%;animation-delay:0s;">💐</div>
+<div class="particle" style="left:85%;top:25%;animation-delay:2s;">🌹</div>
+<div class="particle" style="left:50%;top:10%;animation-delay:4s;">💘</div>
+
+<h1>💖 Sucursales Celucenter 💕</h1>
+<p class="subtitle">¡Celebra el amor y la amistad con nosotros!</p>
+<p class="festive-message">Visita cualquiera de nuestras sucursales y encuentra el regalo perfecto 💝</p>
+
+<div class="grid" id="catalogo"></div>
+
+<script>
+// === CONFIGURACIÓN ===
+const GITHUB_REPO = "piztian/SucursalesCelucenter";
+const FOTOS_PATH = "fotos";
+const SHEET_URL = "https://opensheet.elk.sh/1La-5XY4i9Ng3zpiXrre5tyAqANxpb9yuZeS8muFiZXA/Lista%20CC";
+const RAW_BASE = `https://raw.githubusercontent.com/${GITHUB_REPO}/main/${FOTOS_PATH}/`;
+const API_URL = `https://api.github.com/repos/${GITHUB_REPO}/contents/${FOTOS_PATH}`;
+
+// Normalizar nombre: quitar espacios, acentos, lowercase, underscores
+function normalize(str) {
+    return str
+        .toLowerCase()
+        .normalize("NFD").replace(/[\u0300-\u036f]/g, "")  // quitar acentos
+        .replace(/[\s_\-()]/g, "")  // quitar espacios, _, -, ()
+        .trim();
+}
+
+// Extraer prefijo de un archivo (todo antes del primer dígito)
+function extractPrefix(filename) {
+    const withoutExt = filename.replace(/\.\w+$/, "");
+    const match = withoutExt.match(/^([a-zA-Z_\s]+)/);
+    return match ? normalize(match[1]) : normalize(withoutExt);
+}
+
+// Extraer prefijo del campo "Archivo" del Sheet (más confiable que el nombre de sucursal)
+function extractSheetPrefix(archivoField) {
+    if (!archivoField || archivoField.trim() === "") return null;
+    // Tomar el primer archivo y extraer prefijo
+    const firstFile = archivoField.split(",")[0].trim();
+    const withoutExt = firstFile.replace(/\.\w+$/, "");
+    // Quitar " (N)" pattern
+    const cleaned = withoutExt.replace(/\s*\(\d+\)\s*$/, "");
+    return normalize(cleaned);
+}
+
+const container = document.getElementById("catalogo");
+
+// Cargar ambos: Sheet + GitHub files
+Promise.all([
+    fetch(SHEET_URL).then(r => r.json()),
+    fetch(API_URL).then(r => r.json())
+]).then(([sucursales, files]) => {
+    // Filtrar solo imágenes
+    const imageFiles = files.filter(f => 
+        f.type === "file" && /\.(jpg|jpeg|png|webp)$/i.test(f.name)
+        && f.name !== "cabecera-celucenter-spotify.png"
+        && f.name !== "faltanfotos.png"
+    );
+
+    // Indexar archivos por prefijo
+    const filesByPrefix = {};
+    imageFiles.forEach(f => {
+        const prefix = extractPrefix(f.name);
+        if (!filesByPrefix[prefix]) filesByPrefix[prefix] = [];
+        filesByPrefix[prefix].push(f.name);
+    });
+
+    console.log("Archivos por prefijo:", filesByPrefix);
+    console.log("Sucursales:", sucursales.length);
+
+    container.innerHTML = "";
+
+    sucursales.forEach((item, index) => {
+        const nombre = item["Nombre de Sucursal"] || "";
+        
+        // Intentar match por campo Archivo (más preciso) o por nombre de sucursal
+        const sheetPrefix = extractSheetPrefix(item["Archivo"]);
+        const namePrefix = normalize(nombre);
+        
+        // Buscar fotos: primero por prefijo del Sheet, luego por nombre
+        let fotos = [];
+        if (sheetPrefix && filesByPrefix[sheetPrefix]) {
+            fotos = filesByPrefix[sheetPrefix];
+        } else if (filesByPrefix[namePrefix]) {
+            fotos = filesByPrefix[namePrefix];
+        } else {
+            // Buscar match parcial
+            for (const [prefix, files] of Object.entries(filesByPrefix)) {
+                if (prefix.includes(namePrefix) || namePrefix.includes(prefix)) {
+                    fotos = files;
+                    break;
+                }
+            }
+        }
+
+        // Construir URLs
+        const imagenes = fotos.map(f => RAW_BASE + encodeURIComponent(f));
+
+        const idCarrusel = `carrusel-${index}`;
+        const waLink = item["Walink"] || "";
+        const whatsappButton = waLink ? `<a class="link-whatsapp" href="${waLink}" target="_blank">💬 WhatsApp</a>` : "";
+        const spotifyButton = waLink ? `<a class="link-spotify" href="${waLink}" target="_blank">🎵 Spotify</a>` : "";
+
+        const imgHtml = imagenes.length > 0
+            ? `<img id="${idCarrusel}" src="${imagenes[0]}" alt="${nombre}">`
+            : `<div class="no-photo">📷 Próximamente...</div>`;
+
+        const html = `
+            <div class="card">
+                <div class="card-ribbon">AMOR & AMISTAD</div>
+                <a href="https://celucentershop.bitrix24.site/detallesucursal/?sucursal=${encodeURIComponent(nombre)}">
+                    ${imgHtml}
+                </a>
+                <div class="info">
+                    <div class="nombre">💕 ${nombre} 💕</div>
+                    <div class="direccion">${item["Dirección"] || ""}</div>
+                    <div class="button-group">
+                        <a class="link-maps" href="${item["Link de Ubicación en Maps"]}" target="_blank">🗺️ Ubicación</a>
+                        ${whatsappButton}
+                        ${spotifyButton}
+                    </div>
+                </div>
+            </div>
+        `;
+        container.insertAdjacentHTML("beforeend", html);
+
+        // Carrusel automático si hay múltiples fotos
+        if (imagenes.length > 1) {
+            let i = 0;
+            setInterval(() => {
+                i = (i + 1) % imagenes.length;
+                const imgEl = document.getElementById(idCarrusel);
+                if (imgEl) {
+                    imgEl.style.opacity = 0;
+                    setTimeout(() => {
+                        imgEl.src = imagenes[i];
+                        imgEl.style.opacity = 1;
+                    }, 300);
+                }
+            }, 3000);
+        }
+    });
+
+}).catch(err => {
+    console.error("Error cargando datos:", err);
+    container.innerHTML = `<p style="text-align:center;color:#ff69b4;padding:40px;">Cargando sucursales... 💖</p>`;
+});
+</script>
+</body>
+</html>
