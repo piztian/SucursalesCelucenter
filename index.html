@@ -1,206 +1,406 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<title>Sucursales Celucenter - ¡Feliz Día del Amor y la Amistad! 💖</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<style>
-*{margin:0;padding:0;box-sizing:border-box;}
-body{font-family:'Segoe UI',sans-serif;background:linear-gradient(135deg,#1a0a0f 0%,#2d1a24 50%,#1a0a0f 100%);min-height:100vh;color:#fff;overflow-x:hidden;}
-body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;background:radial-gradient(circle at 20% 50%,rgba(255,20,147,0.12) 0%,transparent 50%),radial-gradient(circle at 80% 80%,rgba(255,105,180,0.12) 0%,transparent 50%);pointer-events:none;z-index:1;}
-h1{text-align:center;padding:40px 20px 20px;font-size:3.5em;background:linear-gradient(45deg,#ff1493,#ff69b4,#ff1493);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:loveGlow 2s ease-in-out infinite;position:relative;z-index:2;}
-@keyframes loveGlow{0%,100%{filter:drop-shadow(0 0 5px rgba(255,20,147,0.3));}50%{filter:drop-shadow(0 0 10px rgba(255,105,180,0.4));}}
-.subtitle{text-align:center;font-size:1.2em;color:#ff69b4;margin-bottom:15px;position:relative;z-index:2;text-shadow:0 0 10px rgba(255,105,180,0.5);}
-.festive-message{text-align:center;font-size:1em;color:#ffb6e1;margin-bottom:30px;position:relative;z-index:2;font-style:italic;text-shadow:0 0 8px rgba(255,182,225,0.4);}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:30px;padding:30px;max-width:1400px;margin:auto;position:relative;z-index:2;}
-.card{position:relative;overflow:hidden;border-radius:15px;background:rgba(255,255,255,0.03);backdrop-filter:blur(10px);border:2px solid rgba(255,20,147,0.4);box-shadow:0 8px 32px rgba(0,0,0,0.3),inset 0 1px 0 rgba(255,20,147,0.1);transition:all 0.4s cubic-bezier(0.34,1.56,0.64,1);cursor:pointer;}
-.card:hover{transform:translateY(-15px) scale(1.02);border-color:rgba(255,105,180,0.8);box-shadow:0 15px 50px rgba(255,20,147,0.4),0 0 30px rgba(255,105,180,0.3),inset 0 1px 0 rgba(255,20,147,0.2);}
-.card::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,105,180,0.15),transparent);transition:left 0.5s;z-index:1;}
-.card:hover::before{left:100%;}
-.card-ribbon{position:absolute;top:10px;right:-35px;width:90px;background:#ff1493;color:#fff;text-align:center;padding:5px 0;transform:rotate(45deg);font-weight:bold;font-size:0.8em;box-shadow:0 3px 8px rgba(0,0,0,0.3);z-index:5;text-shadow:0 1px 2px rgba(0,0,0,0.5);}
-.card img{width:100%;height:240px;object-fit:contain;background:linear-gradient(135deg,rgba(255,20,147,0.08),rgba(255,105,180,0.08));transition:transform 0.3s ease, opacity 0.3s ease;position:relative;z-index:0;}
-.card:hover img{transform:scale(1.08);}
-.info{padding:20px;background:rgba(0,0,0,0.3);position:relative;z-index:2;border-top:1px solid rgba(255,20,147,0.2);}
-.nombre{font-weight:bold;font-size:1.4em;margin-bottom:10px;color:#ff69b4;text-shadow:0 0 10px rgba(255,105,180,0.5);}
-.direccion{font-size:0.95em;margin:8px 0;color:#ffb6e1;display:flex;align-items:center;gap:8px;}
-.direccion::before{content:'💕';font-size:1.1em;}
-.button-group{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap;}
-.link-maps,.link-whatsapp,.link-spotify{display:inline-block;padding:10px 15px;font-size:0.95em;text-decoration:none;color:#fff;border-radius:8px;transition:all 0.3s ease;border:1px solid;position:relative;z-index:3;flex:1;text-align:center;min-width:130px;}
-.link-maps{background:linear-gradient(135deg,#ff1493,#c71585);border-color:rgba(255,20,147,0.5);}
-.link-maps:hover{background:linear-gradient(135deg,#c71585,#ff1493);box-shadow:0 0 20px rgba(255,20,147,0.6);transform:translateX(5px);}
-.link-whatsapp{background:linear-gradient(135deg,#ff69b4,#ff1493);border-color:rgba(255,105,180,0.5);}
-.link-whatsapp:hover{background:linear-gradient(135deg,#ff1493,#ff69b4);box-shadow:0 0 20px rgba(255,105,180,0.6);transform:translateX(5px);}
-.link-spotify{background:linear-gradient(135deg,#ff69b4,#ffb6e1);border-color:rgba(255,105,180,0.5);color:#8b0045;}
-.link-spotify:hover{background:linear-gradient(135deg,#ffb6e1,#ff69b4);box-shadow:0 0 20px rgba(255,182,225,0.6);transform:translateX(5px);color:#8b0045;}
-.no-photo{display:flex;align-items:center;justify-content:center;height:240px;background:linear-gradient(135deg,rgba(255,20,147,0.08),rgba(255,105,180,0.08));color:#ff69b4;font-size:1.2em;opacity:0.7;}
-.heart{position:fixed;font-size:1.5em;animation:heartfall 10s linear infinite;pointer-events:none;z-index:0;opacity:0.7;}
-@keyframes heartfall{from{transform:translateY(-10vh) rotate(0deg);}to{transform:translateY(100vh) rotate(360deg);}}
-.particle{position:fixed;font-size:1.5em;animation:float 12s infinite ease-in-out;pointer-events:none;z-index:0;opacity:0.7;}
-@keyframes float{0%,100%{transform:translateX(0) translateY(0) rotate(0deg);}25%{transform:translateX(40px) translateY(-30px) rotate(90deg);}50%{transform:translateX(0) translateY(-50px) rotate(180deg);}75%{transform:translateX(-40px) translateY(-30px) rotate(270deg);}}
-@media(max-width:768px){h1{font-size:2.5em;padding:30px 20px 15px;}.grid{grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px;padding:20px;}.card{border-radius:12px;}.button-group{flex-direction:column;}}
-</style>
+    <meta charset="UTF-8">
+    <title>Sucursales Celucenter - Vacaciones de Verano 🌴☀️</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --turquoise: #00bcd4;
+            --turquoise-light: #4dd0e1;
+            --turquoise-soft: #b2ebf2;
+            --coral: #ff7043;
+            --coral-light: #ff8a65;
+            --yellow: #ffd54f;
+            --yellow-light: #ffe082;
+            --sand: #fff8e1;
+            --dark: #0a1628;
+            --dark-card: rgba(10, 22, 40, 0.85);
+            --sky: #1565c0;
+        }
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        html, body, .landing-page, .landing-body, .b24-widget-wrapper,
+        [class*="landing"], [class*="block-"], [class*="widget"] {
+            background: var(--dark) !important;
+            background-color: var(--dark) !important;
+            color: #fff !important;
+        }
+        body {
+            font-family: 'Inter', sans-serif !important;
+            background: linear-gradient(180deg, #0a1628 0%, #0d2137 40%, #0a1628 100%) !important;
+            min-height: 100vh;
+            color: #fff !important;
+            overflow-x: hidden;
+        }
+        .hero {
+            position: relative;
+            width: 100%;
+            min-height: 50vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 60px 20px;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(ellipse at 30% 70%, rgba(0, 188, 212, 0.08) 0%, transparent 60%),
+                radial-gradient(ellipse at 70% 30%, rgba(255, 112, 67, 0.06) 0%, transparent 55%),
+                radial-gradient(ellipse at 50% 90%, rgba(255, 213, 79, 0.05) 0%, transparent 50%);
+            z-index: 0;
+        }
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            height: 120px;
+            background: linear-gradient(transparent, var(--dark));
+            z-index: 1;
+        }
+        .hero-content { position: relative; z-index: 2; max-width: 800px; }
+        .hero-emoji { font-size: 4em; margin-bottom: 15px; animation: sunPulse 3s ease-in-out infinite; }
+        @keyframes sunPulse {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.1) rotate(5deg); }
+        }
+        .hero h1 {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 3.8em;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--turquoise-light), var(--yellow), var(--coral), var(--turquoise-light));
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: shimmer 4s ease-in-out infinite;
+            line-height: 1.1;
+            margin-bottom: 20px;
+        }
+        @keyframes shimmer {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        .hero-sub { font-size: 1.3em; color: var(--turquoise-soft); font-weight: 300; letter-spacing: 0.5px; margin-bottom: 10px; }
+        .hero-tagline { font-size: 1em; color: rgba(178, 235, 242, 0.6); font-style: italic; margin-bottom: 30px; }
+        .hero-stats {
+            display: inline-flex;
+            gap: 30px;
+            padding: 12px 30px;
+            background: rgba(0, 188, 212, 0.08);
+            border: 1px solid rgba(0, 188, 212, 0.2);
+            border-radius: 50px;
+            font-size: 0.85em;
+            color: var(--turquoise-light);
+        }
+        .hero-stats span { display: flex; align-items: center; gap: 6px; }
+        .hero-stats .num { font-weight: 600; font-size: 1.2em; color: #fff; }
+        .scroll-hint { position: relative; z-index: 2; margin-top: 35px; animation: bounce 2s infinite; font-size: 1.5em; opacity: 0.5; }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(8px); } }
+        .float-container { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+        .float-item { position: absolute; top: -5%; animation: floatDown linear infinite; opacity: 0; }
+        @keyframes floatDown {
+            0% { transform: translateY(-10vh) rotate(0deg) translateX(0); opacity: 0; }
+            8% { opacity: 0.5; }
+            50% { transform: translateY(50vh) rotate(180deg) translateX(30px); }
+            85% { opacity: 0.3; }
+            100% { transform: translateY(110vh) rotate(360deg) translateX(-20px); opacity: 0; }
+        }
+        .waves { position: fixed; bottom: 0; left: 0; right: 0; height: 80px; pointer-events: none; z-index: 0; overflow: hidden; }
+        .wave { position: absolute; bottom: 0; width: 200%; height: 60px; background: rgba(0, 188, 212, 0.04); border-radius: 50% 50% 0 0; animation: waveMove 6s ease-in-out infinite; }
+        .wave:nth-child(2) { height: 40px; background: rgba(0, 188, 212, 0.03); animation-duration: 8s; animation-delay: -2s; }
+        @keyframes waveMove { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(-25%); } }
+        .section-title {
+            text-align: center;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.8em;
+            color: var(--turquoise-light);
+            margin: 0 0 30px;
+            position: relative;
+            z-index: 2;
+        }
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--turquoise), transparent);
+            margin: 12px auto 0;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 28px;
+            padding: 0 30px 60px;
+            max-width: 1440px;
+            margin: auto;
+            position: relative;
+            z-index: 2;
+        }
+        .card {
+            position: relative;
+            overflow: hidden;
+            border-radius: 16px;
+            background: var(--dark-card);
+            border: 1px solid rgba(0, 188, 212, 0.15);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+            transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.6s ease forwards;
+        }
+        @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
+        .card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(0, 188, 212, 0.5);
+            box-shadow: 0 20px 60px rgba(0, 188, 212, 0.15), 0 0 40px rgba(0, 188, 212, 0.08);
+        }
+        .card::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: linear-gradient(135deg, rgba(0, 188, 212, 0.03), transparent 50%);
+            pointer-events: none;
+            z-index: 1;
+        }
+        .carousel { position: relative; width: 100%; height: 260px; overflow: hidden; background: linear-gradient(180deg, rgba(0, 188, 212, 0.04), rgba(0,0,0,0.2)); }
+        .carousel img { width: 100%; height: 260px; object-fit: contain; position: absolute; top: 0; left: 0; transition: opacity 0.6s ease; }
+        .carousel img.active { opacity: 1; z-index: 1; }
+        .carousel img.hidden { opacity: 0; z-index: 0; }
+        .carousel:hover img.active { transform: scale(1.03); transition: transform 3s ease; }
+        .carousel-overlay { position: absolute; bottom: 0; left: 0; right: 0; height: 60px; background: linear-gradient(transparent, rgba(10, 22, 40, 0.8)); z-index: 2; }
+        .dots { position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%); display: flex; gap: 7px; z-index: 3; }
+        .dots .d { width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,0.3); transition: all 0.3s; cursor: pointer; }
+        .dots .d.on { background: var(--turquoise); width: 20px; border-radius: 4px; box-shadow: 0 0 10px rgba(0, 188, 212, 0.6); }
+        .photo-badge { position: absolute; top: 12px; left: 12px; background: rgba(255, 112, 67, 0.85); backdrop-filter: blur(8px); color: #fff; padding: 4px 10px; border-radius: 20px; font-size: 0.72em; font-weight: 500; z-index: 5; letter-spacing: 0.3px; }
+        .no-photo { width: 100%; height: 260px; display: flex; flex-direction: column; align-items: center; justify-content: center; background: linear-gradient(135deg, rgba(0, 188, 212, 0.03), rgba(0,0,0,0.1)); color: rgba(77, 208, 225, 0.35); font-size: 0.9em; gap: 8px; }
+        .no-photo .emoji-big { font-size: 2.5em; }
+        .info { padding: 22px; position: relative; z-index: 2; }
+        .store-name { font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 1.4em; margin-bottom: 10px; color: #fff; display: flex; align-items: center; gap: 8px; }
+        .store-name .store-icon { font-size: 0.8em; }
+        .address { font-size: 0.88em; color: rgba(178, 235, 242, 0.6); line-height: 1.5; margin-bottom: 15px; display: flex; gap: 8px; }
+        .address .icon { flex-shrink: 0; }
+        .btns { display: flex; gap: 10px; flex-wrap: wrap; }
+        .btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 10px 18px; font-size: 0.88em; font-weight: 500; text-decoration: none; color: #fff; border-radius: 10px; transition: all 0.3s ease; border: none; flex: 1; min-width: 120px; cursor: pointer; letter-spacing: 0.3px; }
+        .btn-maps { background: linear-gradient(135deg, var(--coral), #e64a19); }
+        .btn-maps:hover { box-shadow: 0 4px 20px rgba(255, 112, 67, 0.5); transform: translateY(-2px); }
+        .btn-wa { background: linear-gradient(135deg, #25d366, #128c7e); }
+        .btn-wa:hover { box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4); transform: translateY(-2px); }
+        .divider { display: flex; align-items: center; justify-content: center; gap: 15px; padding: 15px 0; color: rgba(77, 208, 225, 0.3); font-size: 0.8em; max-width: 1440px; margin: 0 auto; position: relative; z-index: 2; }
+        .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, transparent, rgba(0, 188, 212, 0.15), transparent); }
+        .loading { text-align: center; padding: 80px 20px; z-index: 2; position: relative; }
+        .loader { width: 50px; height: 50px; border: 2px solid rgba(0, 188, 212, 0.15); border-top-color: var(--turquoise); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 20px; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .loading-text { color: var(--turquoise-light); font-size: 1.1em; font-weight: 300; }
+        .footer { text-align: center; padding: 40px 20px; color: rgba(178, 235, 242, 0.25); font-size: 0.8em; position: relative; z-index: 2; }
+        .footer a { color: var(--turquoise-light); text-decoration: none; }
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.4em; }
+            .hero-sub { font-size: 1.1em; }
+            .hero-stats { flex-direction: column; gap: 10px; padding: 15px 25px; }
+            .grid { grid-template-columns: 1fr; gap: 20px; padding: 0 15px 40px; }
+            .btns { flex-direction: column; }
+            .carousel, .carousel img, .no-photo { height: 220px; }
+        }
+        .carousel-link, .no-photo-link { display: block; text-decoration: none; }
+        @media (min-width: 769px) and (max-width: 1024px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+    </style>
 </head>
 <body>
 
-<!-- Corazones cayendo animados -->
-<div class="heart" style="left:10%;animation-delay:0s;">💖</div>
-<div class="heart" style="left:20%;animation-delay:2s;">❤️</div>
-<div class="heart" style="left:30%;animation-delay:4s;">💗</div>
-<div class="heart" style="left:40%;animation-delay:1s;">💕</div>
-<div class="heart" style="left:50%;animation-delay:3s;">💝</div>
-<div class="heart" style="left:60%;animation-delay:5s;">💖</div>
-<div class="heart" style="left:70%;animation-delay:2.5s;">❤️</div>
-<div class="heart" style="left:80%;animation-delay:4.5s;">💗</div>
-<div class="heart" style="left:90%;animation-delay:1.5s;">💕</div>
+<div class="float-container" id="floatContainer"></div>
+<div class="waves"><div class="wave"></div><div class="wave"></div></div>
 
-<!-- Decoración romántica flotante -->
-<div class="particle" style="left:10%;top:15%;animation-delay:0s;">💐</div>
-<div class="particle" style="left:85%;top:25%;animation-delay:2s;">🌹</div>
-<div class="particle" style="left:50%;top:10%;animation-delay:4s;">💘</div>
+<section class="hero">
+    <div class="hero-content">
+        <div class="hero-emoji">🌴</div>
+        <h1>Sucursales Celucenter</h1>
+        <p class="hero-sub">Vacaciones de Verano 2026</p>
+        <p class="hero-tagline">Visita tu sucursal mas cercana y estrena este verano ☀️</p>
+        <div class="hero-stats" id="heroStats" style="display:none;">
+            <span><span class="num" id="statStores">0</span> sucursales</span>
+            <span><span class="num" id="statPhotos">0</span> fotos</span>
+            <span>🌊</span>
+        </div>
+    </div>
+    <div class="scroll-hint">↓</div>
+</section>
 
-<h1>💖 Sucursales Celucenter 💕</h1>
-<p class="subtitle">¡Celebra el amor y la amistad con nosotros!</p>
-<p class="festive-message">Visita cualquiera de nuestras sucursales y encuentra el regalo perfecto 💝</p>
+<div id="loading" class="loading">
+    <div class="loader"></div>
+    <p class="loading-text">Cargando sucursales...</p>
+</div>
 
-<div class="grid" id="catalogo"></div>
+<div id="withPhotos"></div>
+<div class="divider" id="divider" style="display:none;">🌊 Mas sucursales 🌊</div>
+<div id="withoutPhotos"></div>
+
+<div class="footer">🌴 Celucenter Retails — Vacaciones de Verano 2026 ☀️</div>
 
 <script>
-// === CONFIGURACIÓN ===
-const GITHUB_REPO = "piztian/SucursalesCelucenter";
-const FOTOS_PATH = "fotos";
-const SHEET_URL = "https://opensheet.elk.sh/1La-5XY4i9Ng3zpiXrre5tyAqANxpb9yuZeS8muFiZXA/Lista%20CC";
-const RAW_BASE = `https://raw.githubusercontent.com/${GITHUB_REPO}/main/${FOTOS_PATH}/`;
-const API_URL = `https://api.github.com/repos/${GITHUB_REPO}/contents/${FOTOS_PATH}`;
+(function() {
+    const container = document.getElementById('floatContainer');
+    const items = ['🌴','☀️','🌊','🏖️','🐚','🌺','🍹','⛱️','🌸','🦩'];
+    for (let i = 0; i < 15; i++) {
+        const el = document.createElement('div');
+        el.className = 'float-item';
+        el.textContent = items[i % items.length];
+        el.style.left = (3 + Math.random() * 94) + '%';
+        el.style.fontSize = (0.7 + Math.random() * 1) + 'em';
+        el.style.animationDuration = (10 + Math.random() * 10) + 's';
+        el.style.animationDelay = (Math.random() * 12) + 's';
+        container.appendChild(el);
+    }
+})();
 
-// Normalizar nombre: quitar espacios, acentos, lowercase, underscores
-function normalize(str) {
-    return str
-        .toLowerCase()
-        .normalize("NFD").replace(/[\u0300-\u036f]/g, "")  // quitar acentos
-        .replace(/[\s_\-()]/g, "")  // quitar espacios, _, -, ()
-        .trim();
-}
+(async function() {
+    const loadingEl = document.getElementById("loading");
+    const withPhotosEl = document.getElementById("withPhotos");
+    const withoutPhotosEl = document.getElementById("withoutPhotos");
+    const dividerEl = document.getElementById("divider");
 
-// Extraer prefijo de un archivo (todo antes del primer dígito)
-function extractPrefix(filename) {
-    const withoutExt = filename.replace(/\.\w+$/, "");
-    const match = withoutExt.match(/^([a-zA-Z_\s]+)/);
-    return match ? normalize(match[1]) : normalize(withoutExt);
-}
+    const GITHUB_API = "https://api.github.com/repos/piztian/SucursalesCelucenter/contents/fotos";
+    const GITHUB_RAW = "https://raw.githubusercontent.com/piztian/SucursalesCelucenter/main/fotos/";
+    const SHEET_URL = "https://opensheet.elk.sh/1La-5XY4i9Ng3zpiXrre5tyAqANxpb9yuZeS8muFiZXA/Lista%20CC";
+    const IMG_EXTS = ['.jpg', '.jpeg', '.png', '.webp'];
 
-// Extraer prefijo del campo "Archivo" del Sheet (más confiable que el nombre de sucursal)
-function extractSheetPrefix(archivoField) {
-    if (!archivoField || archivoField.trim() === "") return null;
-    // Tomar el primer archivo y extraer prefijo
-    const firstFile = archivoField.split(",")[0].trim();
-    const withoutExt = firstFile.replace(/\.\w+$/, "");
-    // Quitar " (N)" pattern
-    const cleaned = withoutExt.replace(/\s*\(\d+\)\s*$/, "");
-    return normalize(cleaned);
-}
+    const [ghData, sheetData] = await Promise.all([
+        fetch(GITHUB_API).then(r => r.json()),
+        fetch(SHEET_URL).then(r => r.json())
+    ]);
 
-const container = document.getElementById("catalogo");
-
-// Cargar ambos: Sheet + GitHub files
-Promise.all([
-    fetch(SHEET_URL).then(r => r.json()),
-    fetch(API_URL).then(r => r.json())
-]).then(([sucursales, files]) => {
-    // Filtrar solo imágenes
-    const imageFiles = files.filter(f => 
-        f.type === "file" && /\.(jpg|jpeg|png|webp)$/i.test(f.name)
-        && f.name !== "cabecera-celucenter-spotify.png"
-        && f.name !== "faltanfotos.png"
+    const allPhotos = ghData.filter(f =>
+        f.type === 'file' && IMG_EXTS.some(ext => f.name.toLowerCase().endsWith(ext))
     );
 
-    // Indexar archivos por prefijo
-    const filesByPrefix = {};
-    imageFiles.forEach(f => {
-        const prefix = extractPrefix(f.name);
-        if (!filesByPrefix[prefix]) filesByPrefix[prefix] = [];
-        filesByPrefix[prefix].push(f.name);
+    function extractStore(fn) {
+        return fn.toLowerCase().replace(/\.[^.]+$/, '').replace(/[\s_]*\(?(\d+)\)?$/, '').trim();
+    }
+
+    const photosByStore = {};
+    const skip = ['faltanfotos', 'cabecera-celucenter-spotify'];
+    allPhotos.forEach(f => {
+        const s = extractStore(f.name);
+        if (!s || skip.includes(s)) return;
+        (photosByStore[s] = photosByStore[s] || []).push(GITHUB_RAW + encodeURIComponent(f.name));
     });
 
-    console.log("Archivos por prefijo:", filesByPrefix);
-    console.log("Sucursales:", sucursales.length);
+    function norm(s) {
+        return s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]/g, '');
+    }
 
-    container.innerHTML = "";
+    const sheetMap = {};
+    sheetData.forEach(item => { sheetMap[norm(item['Nombre de Sucursal'] || '')] = item; });
 
-    sucursales.forEach((item, index) => {
-        const nombre = item["Nombre de Sucursal"] || "";
-        
-        // Intentar match por campo Archivo (más preciso) o por nombre de sucursal
-        const sheetPrefix = extractSheetPrefix(item["Archivo"]);
-        const namePrefix = normalize(nombre);
-        
-        // Buscar fotos: primero por prefijo del Sheet, luego por nombre
-        let fotos = [];
-        if (sheetPrefix && filesByPrefix[sheetPrefix]) {
-            fotos = filesByPrefix[sheetPrefix];
-        } else if (filesByPrefix[namePrefix]) {
-            fotos = filesByPrefix[namePrefix];
-        } else {
-            // Buscar match parcial
-            for (const [prefix, files] of Object.entries(filesByPrefix)) {
-                if (prefix.includes(namePrefix) || namePrefix.includes(prefix)) {
-                    fotos = files;
-                    break;
-                }
+    const storesWithPhotos = [];
+    const storesNoPhotos = [];
+    const matched = new Set();
+
+    Object.keys(photosByStore).sort().forEach(key => {
+        const photos = photosByStore[key];
+        const nk = norm(key);
+        let sd = sheetMap[nk];
+        if (!sd) {
+            for (const [sk, sv] of Object.entries(sheetMap)) {
+                if (sk.includes(nk) || nk.includes(sk)) { sd = sv; matched.add(sk); break; }
             }
-        }
+        } else { matched.add(nk); }
+        storesWithPhotos.push({
+            name: sd ? sd['Nombre de Sucursal'] : key.charAt(0).toUpperCase() + key.slice(1),
+            address: sd ? (sd['Dirección'] || '') : '',
+            maps: sd ? (sd['Link de Ubicación en Maps'] || '') : '',
+            wa: sd ? (sd['Walink'] || '') : '',
+            photos
+        });
+    });
 
-        // Construir URLs
-        const imagenes = fotos.map(f => RAW_BASE + encodeURIComponent(f));
-
-        const idCarrusel = `carrusel-${index}`;
-        const waLink = item["Walink"] || "";
-        const whatsappButton = waLink ? `<a class="link-whatsapp" href="${waLink}" target="_blank">💬 WhatsApp</a>` : "";
-        const spotifyButton = waLink ? `<a class="link-spotify" href="${waLink}" target="_blank">🎵 Spotify</a>` : "";
-
-        const imgHtml = imagenes.length > 0
-            ? `<img id="${idCarrusel}" src="${imagenes[0]}" alt="${nombre}">`
-            : `<div class="no-photo">📷 Próximamente...</div>`;
-
-        const html = `
-            <div class="card">
-                <div class="card-ribbon">AMOR & AMISTAD</div>
-                <a href="https://celucentershop.bitrix24.site/detallesucursal/?sucursal=${encodeURIComponent(nombre)}">
-                    ${imgHtml}
-                </a>
-                <div class="info">
-                    <div class="nombre">💕 ${nombre} 💕</div>
-                    <div class="direccion">${item["Dirección"] || ""}</div>
-                    <div class="button-group">
-                        <a class="link-maps" href="${item["Link de Ubicación en Maps"]}" target="_blank">🗺️ Ubicación</a>
-                        ${whatsappButton}
-                        ${spotifyButton}
-                    </div>
-                </div>
-            </div>
-        `;
-        container.insertAdjacentHTML("beforeend", html);
-
-        // Carrusel automático si hay múltiples fotos
-        if (imagenes.length > 1) {
-            let i = 0;
-            setInterval(() => {
-                i = (i + 1) % imagenes.length;
-                const imgEl = document.getElementById(idCarrusel);
-                if (imgEl) {
-                    imgEl.style.opacity = 0;
-                    setTimeout(() => {
-                        imgEl.src = imagenes[i];
-                        imgEl.style.opacity = 1;
-                    }, 300);
-                }
-            }, 3000);
+    sheetData.forEach(item => {
+        const k = norm(item['Nombre de Sucursal'] || '');
+        if (!matched.has(k)) {
+            storesNoPhotos.push({
+                name: item['Nombre de Sucursal'],
+                address: item['Dirección'] || '',
+                maps: item['Link de Ubicación en Maps'] || '',
+                wa: item['Walink'] || '',
+                photos: []
+            });
         }
     });
 
-}).catch(err => {
-    console.error("Error cargando datos:", err);
-    container.innerHTML = `<p style="text-align:center;color:#ff69b4;padding:40px;">Cargando sucursales... 💖</p>`;
-});
+    storesWithPhotos.sort((a, b) => a.name.localeCompare(b.name, 'es'));
+    storesNoPhotos.sort((a, b) => a.name.localeCompare(b.name, 'es'));
+
+    document.getElementById('statStores').textContent = storesWithPhotos.length + storesNoPhotos.length;
+    document.getElementById('statPhotos').textContent = allPhotos.length;
+    document.getElementById('heroStats').style.display = 'inline-flex';
+    loadingEl.style.display = 'none';
+
+    function renderCard(store, idx, targetEl) {
+        const hasP = store.photos.length > 0;
+        const detailUrl = `https://celucentershop.bitrix24.site/detallesucursal/?sucursal=${encodeURIComponent(store.name)}`;
+        let photoHTML;
+
+        if (hasP) {
+            const imgs = store.photos.map((u, i) =>
+                `<img src="${u}" alt="${store.name}" class="${i===0?'active':'hidden'}">`
+            ).join('');
+            const dots = store.photos.length > 1 ? `<div class="dots">${store.photos.map((_, i) =>
+                `<span class="d ${i===0?'on':''}" data-i="${i}"></span>`
+            ).join('')}</div>` : '';
+            photoHTML = `<a href="${detailUrl}" class="carousel-link" style="text-decoration:none;display:block;">
+                <div class="carousel" id="c${idx}">
+                    <span class="photo-badge">📸 ${store.photos.length} fotos</span>
+                    ${imgs}<div class="carousel-overlay"></div>${dots}
+                </div></a>`;
+        } else {
+            photoHTML = `<a href="${detailUrl}" class="no-photo-link" style="text-decoration:none;display:block;">
+                <div class="no-photo"><span class="emoji-big">📸</span>Proximamente</div></a>`;
+        }
+
+        const mapsBtn = store.maps ? `<a class="btn btn-maps" href="${store.maps}" target="_blank">🗺️ Ubicacion</a>` : '';
+        const waBtn = store.wa ? `<a class="btn btn-wa" href="${store.wa}" target="_blank">💬 WhatsApp</a>` : '';
+
+        targetEl.insertAdjacentHTML('beforeend', `<div class="card" style="animation-delay:${(idx%8)*0.08}s">
+            ${photoHTML}
+            <div class="info">
+                <div class="store-name"><span class="store-icon">🏪</span> ${store.name}</div>
+                ${store.address ? `<div class="address"><span class="icon">📍</span><span>${store.address.replace(/\n/g,'<br>')}</span></div>` : ''}
+                <div class="btns">${mapsBtn}${waBtn}</div>
+            </div></div>`);
+
+        if (hasP && store.photos.length > 1) {
+            let cur = 0;
+            const el = document.getElementById(`c${idx}`);
+            setInterval(() => {
+                const imgs = el.querySelectorAll('img');
+                const dots = el.querySelectorAll('.d');
+                imgs[cur].className = 'hidden';
+                if (dots[cur]) dots[cur].className = 'd';
+                cur = (cur + 1) % imgs.length;
+                imgs[cur].className = 'active';
+                if (dots[cur]) dots[cur].className = 'd on';
+            }, 3500);
+        }
+    }
+
+    if (storesWithPhotos.length) {
+        withPhotosEl.innerHTML = '<h2 class="section-title">🌴 Nuestras Sucursales 🌴</h2><div class="grid" id="gridPhotos"></div>';
+        storesWithPhotos.forEach((s, i) => renderCard(s, i, document.getElementById('gridPhotos')));
+    }
+    if (storesNoPhotos.length) {
+        dividerEl.style.display = 'flex';
+        withoutPhotosEl.innerHTML = '<div class="grid" id="gridNoPhotos"></div>';
+        storesNoPhotos.forEach((s, i) => renderCard(s, 1000+i, document.getElementById('gridNoPhotos')));
+    }
+})();
 </script>
 </body>
 </html>
